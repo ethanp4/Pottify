@@ -5,12 +5,13 @@ using Id3;
 
 namespace Pottify {
     public partial class Form1 : Form {
+        string[] files;
         public Form1() {
             InitializeComponent();
             //https://github.com/JeevanJames/Id3
             var songsPath = "..\\..\\..\\Songs";
             //DirectoryInfo d = new DirectoryInfo(songsPath); 
-            string[] files = Directory.GetFiles(songsPath, "*.mp3");
+            files = Directory.GetFiles(songsPath, "*.mp3");
 
             foreach (var file in files) {
                 setNothing(file);
@@ -23,7 +24,7 @@ namespace Pottify {
                     tag = new();
                     tag.Year.Value = 2000;
                     tag.Title = "Unknown";
-                    mp3.WriteTag(tag, WriteConflictAction.Replace); //rewrite that tag to the file
+                    //mp3.WriteTag(tag, WriteConflictAction.Replace); //rewrite that tag to the file
                 }
             }
 
@@ -34,6 +35,19 @@ namespace Pottify {
             textSearch.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             textSearch.AutoCompleteSource = AutoCompleteSource.CustomSource;
             textSearch.AutoCompleteCustomSource = songs;
+        }
+
+        private void searchChanged(object sender, EventArgs e) {
+            List<string> res = new List<string>();
+            var query = textSearch.Text;
+
+            foreach (var item in files) {
+                if (item.Contains(query)) {
+                    res.Add(item);
+                }
+            }
+            songsList.Items.Clear();
+            songsList.Items.AddRange(res.ToArray());
         }
     }
 }
