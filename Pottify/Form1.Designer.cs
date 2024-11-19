@@ -24,6 +24,7 @@
         /// </summary>
         private void InitializeComponent() {
             songsList = new ListBox();
+            textSearch = new TextBox();
             SuspendLayout();
             // 
             // songsList
@@ -34,19 +35,30 @@
             songsList.Size = new Size(638, 344);
             songsList.TabIndex = 0;
             // 
+            // textSearch
+            // 
+            textSearch.Location = new Point(64, 13);
+            textSearch.Name = "textSearch";
+            textSearch.PlaceholderText = "Search for a song, album, or artist";
+            textSearch.Size = new Size(638, 27);
+            textSearch.TabIndex = 1;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(textSearch);
             Controls.Add(songsList);
             Name = "Form1";
             Text = "Form1";
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
         private ListBox songsList;
+        private TextBox textSearch;
     }
 }
