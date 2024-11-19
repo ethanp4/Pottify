@@ -1,32 +1,28 @@
 using System.Diagnostics;
 using System.Reflection;
 using System.IO;
-using Id3;
 
 namespace Pottify {
     public partial class Form1 : Form {
         string[] files;
         public Form1() {
             InitializeComponent();
-            //https://github.com/JeevanJames/Id3
+            //https://github.com/mono/taglib-sharp
             var songsPath = "..\\..\\..\\Songs";
             //DirectoryInfo d = new DirectoryInfo(songsPath); 
             files = Directory.GetFiles(songsPath, "*.mp3");
 
             foreach (var file in files) {
-                setNothing(file);
+                var tfile = TagLib.File.Create(file);
+                string title = tfile.Tag.Title;
+                TimeSpan duration = tfile.Properties.Duration;
+                Debug.WriteLine("Title: {0}, duration: {1}", title, duration);
+
+                // change title in the file
+                tfile.Tag.Title = "my new title";
+                tfile.Save();
             }
 
-
-            void setNothing(string mp3FilePath) {
-                using (var mp3 = new Mp3(mp3FilePath, Mp3Permissions.ReadWrite)) {
-                    Id3Tag tag = mp3.GetTag(Id3TagFamily.Version2X); //get the existing tag
-                    tag = new();
-                    tag.Year.Value = 2000;
-                    tag.Title = "Unknown";
-                    //mp3.WriteTag(tag, WriteConflictAction.Replace); //rewrite that tag to the file
-                }
-            }
 
             songsList.Items.AddRange(files);
 
