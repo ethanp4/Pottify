@@ -42,6 +42,7 @@
             textSearch.PlaceholderText = "Search for a song, album, or artist";
             textSearch.Size = new Size(638, 27);
             textSearch.TabIndex = 1;
+            textSearch.TextChanged += searchChanged;
             // 
             // Form1
             // 
