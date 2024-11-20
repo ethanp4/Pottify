@@ -12,17 +12,30 @@ namespace Pottify {
             //DirectoryInfo d = new DirectoryInfo(songsPath); 
             files = Directory.GetFiles(songsPath, "*.mp3");
 
+            //foreach (var file in files) {
+            //    var tfile = TagLib.File.Create(file);
+            //    string title = tfile.Tag.Title;
+            //    TimeSpan duration = tfile.Properties.Duration;
+            //    Debug.WriteLine("Title: {0}, duration: {1}", title, duration);
+
+            //    // change title in the file
+            //    tfile.Tag.Title = "my new title";
+            //    tfile.Save();
+            //}
+
             foreach (var file in files) {
                 var tfile = TagLib.File.Create(file);
-                string title = tfile.Tag.Title;
-                TimeSpan duration = tfile.Properties.Duration;
-                Debug.WriteLine("Title: {0}, duration: {1}", title, duration);
-
-                // change title in the file
-                tfile.Tag.Title = "my new title";
-                tfile.Save();
+                var title = tfile.Tag.Title;
+                var duration = tfile.Properties.Duration;
+                var author = tfile.Tag.Performers;
+                var genre = tfile.Tag.Genres;
+                var s = new Song(title, author, Convert.ToInt32(duration.TotalSeconds), genre, file);
+                
+                songsListView.Items.Add();
             }
 
+            var listItem = new ListViewItem();
+            songsListView.Items.Add(listItem);
 
             songsList.Items.AddRange(files);
 
