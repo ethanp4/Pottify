@@ -17,9 +17,10 @@ namespace Pottify {
         public string album { get; set; }
         public string copyright { get; set; }
         public string comments { get; set; }
-        public DateTime date { get; set; }
+        public uint year { get; set; }
+        public uint trackCount {get; set; }
         public uint trackNumber { get; set; }
-        public TimeSpan length { get; set; } //in seconds
+        public TimeSpan length { get; } //in seconds
         public IPicture picture { get; set; }
         private TagLib.File tfile;
         public string filePath { get; } //complete path
@@ -50,12 +51,32 @@ namespace Pottify {
             album = tfile.Tag.Album;
             copyright = tfile.Tag.Copyright;
             comments = tfile.Tag.Comment;
-            date = tfile.Tag.DateTagged ?? DateTime.MinValue;
+            year = tfile.Tag.Year;
             trackNumber = tfile.Tag.Track;
+            trackCount = tfile.Tag.TrackCount;
             length = tfile.Properties.Duration;
             picture = tfile.Tag.Pictures[0];
-            Debug.WriteLine($"Added song: {title} {artist[0]} {album} no.{trackNumber}");
+            // Debug.WriteLine($"Added song: {title} {artist[0]} {album} no.{trackNumber}");
             songsList.Add(this);
+        }
+
+        public void saveMetadata() {
+            tfile.Tag.Title = title;
+            tfile.Tag.Performers = artist;
+            tfile.Tag.Genres = genre;
+            tfile.Tag.Album = album;
+            tfile.Tag.Copyright = copyright;
+            tfile.Tag.Comment = comments;
+            tfile.Tag.Year = year;
+            tfile.Tag.Track = trackNumber;
+            tfile.Tag.TrackCount = trackCount;
+            tfile.Tag.Pictures[0] = picture;
+            tfile.Save();
+            Debug.WriteLine("Saved song data to file for " + this);
+        }
+        public override string ToString()
+        {
+            return $"{title} by {artist[0]}";
         }
     }
 }
