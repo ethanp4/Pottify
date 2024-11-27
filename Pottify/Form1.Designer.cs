@@ -194,6 +194,7 @@
             btnPlaylist.TextMarginLeft = 0;
             btnPlaylist.TextPadding = new Padding(0);
             btnPlaylist.UseDefaultRadiusAndThickness = true;
+            btnPlaylist.Click += btnPlaylist_Click;
             // 
             // btnAlbums
             // 
@@ -284,6 +285,7 @@
             btnAlbums.TextMarginLeft = 0;
             btnAlbums.TextPadding = new Padding(0);
             btnAlbums.UseDefaultRadiusAndThickness = true;
+            btnAlbums.Click += btnAlbums_Click;
             // 
             // btnAll
             // 
