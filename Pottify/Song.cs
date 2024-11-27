@@ -22,6 +22,7 @@ namespace Pottify {
         public uint trackNumber { get; set; }
         public TimeSpan length { get; } //in seconds
         public IPicture picture { get; set; }
+        public static ImageList images = new();
         private TagLib.File tfile;
         public string filePath { get; } //complete path
 
@@ -56,6 +57,9 @@ namespace Pottify {
             trackCount = tfile.Tag.TrackCount;
             length = tfile.Properties.Duration;
             picture = tfile.Tag.Pictures[0];
+
+            var icon = new Icon(new MemoryStream(picture.Data.Data));
+            images.Images.Add(id.ToString(), icon);
             // Debug.WriteLine($"Added song: {title} {artist[0]} {album} no.{trackNumber}");
             songsList.Add(this);
         }
