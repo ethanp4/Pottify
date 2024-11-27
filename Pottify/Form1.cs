@@ -3,9 +3,11 @@ using System.Reflection;
 using System.IO;
 
 namespace Pottify {
-    public partial class Form1 : Form {
+    public partial class Form1 : Form
+    {
         private List<ListViewItem> fullList = new();
-        public Form1() {
+        public Form1()
+        {
             InitializeComponent();
             //https://github.com/mono/taglib-sharp
 
@@ -22,7 +24,8 @@ namespace Pottify {
             songsListView.Columns.Add("Album", 200);
             songsListView.Columns.Add("Track", 70);
             songsListView.Columns.Add("Year", 100);
-            foreach (var s in Song.songsList) {
+            foreach (var s in Song.songsList)
+            {
                 var listItem = new ListViewItem();
                 listItem.Text = s.title;
                 listItem.SubItems.Add(s.artist[0]);
@@ -32,13 +35,15 @@ namespace Pottify {
                 listItem.Tag = s; //get data from here when clicked or something
                 songsListView.Items.Add(listItem);
             }
-            foreach(var i in songsListView.Items) {
+            foreach (var i in songsListView.Items)
+            {
                 fullList.Add((ListViewItem)i);
             }
             // fullList.AddRange((IEnumerable<ListViewItem>)songsListView.Items); //need to create a copy for filtering
             //set autocomplete source
             var songs = new AutoCompleteStringCollection();
-            foreach(var title in Song.songsList.Select(s => s.title)) {
+            foreach (var title in Song.songsList.Select(s => s.title))
+            {
                 songs.Add(title);
             }
             textSearch.AutoCompleteMode = AutoCompleteMode.Suggest;
@@ -46,16 +51,19 @@ namespace Pottify {
             textSearch.AutoCompleteCustomSource = songs;
         }
 
-        private void songDoubleClick(object sender, EventArgs e) {
+        private void songDoubleClick(object sender, EventArgs e)
+        {
             Song selectedSong = (Song)songsListView.SelectedItems[0].Tag;
             Debug.WriteLine("song was double clicked " + selectedSong);
         }
 
         //searching for now
-        private void searchChanged(object sender, EventArgs e) {
+        private void searchChanged(object sender, EventArgs e)
+        {
             // var query = sender.Text.ToLower();
             var query = textSearch.Text.ToLower();
-            if (query == "") {
+            if (query == "")
+            {
                 songsListView.Items.Clear();
                 songsListView.Items.AddRange(fullList.ToArray());
                 return;
@@ -63,13 +71,20 @@ namespace Pottify {
             // var items = songsListView.Items;
             var items = fullList;
             var res = new List<ListViewItem>();
-            foreach(ListViewItem item in items) {
-                if (item.Text.ToLower().Contains(query)) {
+            foreach (ListViewItem item in items)
+            {
+                if (item.Text.ToLower().Contains(query))
+                {
                     res.Add(item);
                 }
             }
             songsListView.Items.Clear();
             songsListView.Items.AddRange(res.ToArray());
+        }
+
+        private void btnAll_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -72,6 +72,10 @@ namespace Pottify {
             tfile.Tag.TrackCount = trackCount;
             tfile.Tag.Pictures[0] = picture;
             tfile.Save();
+            tfile.Tag.Pictures[0] = picture;
+            tfile.Tag.Title = title;
+            tfile.Tag.Album = album;
+            tfile.Save();
             Debug.WriteLine("Saved song data to file for " + this);
         }
         public override string ToString()
