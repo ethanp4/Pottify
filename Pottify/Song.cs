@@ -58,8 +58,13 @@ namespace Pottify {
             length = tfile.Properties.Duration;
             picture = tfile.Tag.Pictures[0];
 
-            var icon = new Icon(new MemoryStream(picture.Data.Data));
-            images.Images.Add(id.ToString(), icon);
+            var ms = new MemoryStream(picture.Data.Data);
+            ms.Seek(0, SeekOrigin.Begin);
+
+            var bmp = new Bitmap(ms);
+            
+            images.Images.Add(id.ToString(), bmp);
+
             // Debug.WriteLine($"Added song: {title} {artist[0]} {album} no.{trackNumber}");
             songsList.Add(this);
         }
