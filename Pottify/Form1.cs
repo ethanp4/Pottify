@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Reflection;
 using System.IO;
+using System.Linq;
 
 namespace Pottify
 {
@@ -56,41 +57,41 @@ namespace Pottify
             textSearch.AutoCompleteCustomSource = songs;
 
             // load artists into the artistList
-            LoadArtists(); 
+            LoadArtists();
         }
         private void LoadArtists()
         {
             artistList = Song.songsList
-                .SelectMany(s => s.artist) 
-                .Distinct() 
-                .OrderBy(a => a) 
+                .SelectMany(s => s.artist)
+                .Distinct()
+                .OrderBy(a => a)
                 .ToList();
         }
 
-     
+
         private void ShowArtists()
         {
             songsListView.Items.Clear();
-            songsListView.Columns.Clear(); 
-            songsListView.Columns.Add("Artist", 300); 
+            songsListView.Columns.Clear();
+            songsListView.Columns.Add("Artist", 300);
 
             foreach (var artist in artistList)
             {
                 var listItem = new ListViewItem();
                 listItem.Text = artist;
-                listItem.Tag = artist; 
+                listItem.Tag = artist;
                 songsListView.Items.Add(listItem);
             }
 
             songsListView.MouseDoubleClick -= songDoubleClick;
-            songsListView.MouseDoubleClick += artistDoubleClick; 
+            songsListView.MouseDoubleClick += artistDoubleClick;
         }
 
         //show songs by a specific artist
         private void ShowSongsByArtist(string artist)
         {
             songsListView.Items.Clear();
-            songsListView.Columns.Clear(); 
+            songsListView.Columns.Clear();
             songsListView.Columns.Add("Title", 200);
             songsListView.Columns.Add("Artist", 200);
             songsListView.Columns.Add("Album", 200);
@@ -112,7 +113,7 @@ namespace Pottify
                 songsListView.Items.Add(listItem);
             }
 
-           
+
             songsListView.MouseDoubleClick -= artistDoubleClick;
             songsListView.MouseDoubleClick += songDoubleClick;
         }
@@ -128,7 +129,7 @@ namespace Pottify
             var selectedArtist = songsListView.SelectedItems[0].Tag.ToString();
             Debug.WriteLine("artist was double clicked: " + selectedArtist);
 
-            ShowSongsByArtist(selectedArtist); 
+            ShowSongsByArtist(selectedArtist);
         }
 
         // searching for now
@@ -154,7 +155,7 @@ namespace Pottify
             songsListView.Items.AddRange(res.ToArray());
         }
 
-        
+
         private void btnAll_Click(object sender, EventArgs e)
         {
             songsListView.Items.Clear();
@@ -177,6 +178,6 @@ namespace Pottify
             songsListView.View = View.LargeIcon;
         }
 
-       
+
     }
 }
