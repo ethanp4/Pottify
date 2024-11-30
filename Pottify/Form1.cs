@@ -65,7 +65,7 @@ namespace Pottify {
             var listItem = new ListViewItem();
             listItem.Text = s.title;
             listItem.ImageKey = s.id.ToString();
-            listItem.SubItems.Add(s.artist[0]);
+            listItem.SubItems.Add(s.artist);
             listItem.SubItems.Add(s.album);
             listItem.SubItems.Add($"{s.trackNumber} of {s.trackCount}");
             listItem.SubItems.Add(s.year == 0 ? "Not set" : s.year.ToString());
@@ -76,7 +76,7 @@ namespace Pottify {
         private void LoadArtists()
         {
             artistList = Song.songsList
-                .SelectMany(s => s.artist)
+                .Select(s => s.artist)
                 .Distinct()
                 .OrderBy(a => a)
                 .ToList();
@@ -128,8 +128,9 @@ namespace Pottify {
 
         private void editSongEvent(object sender, EventArgs e)
         {
-            var targetSong = songsListView.SelectedItems[0].Tag;
+            var targetSong = (Song)songsListView.SelectedItems[0].Tag;
             var editForm = new SongInfoEditForm(targetSong);
+            editForm.ShowDialog();
             Debug.WriteLine($"Open edit form for {targetSong}");
         }
 
