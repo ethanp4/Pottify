@@ -192,7 +192,7 @@ namespace Pottify {
 
         private void songDoubleClick(object sender, EventArgs e)
         {
-            Song selectedSong = (Song)songsListView.SelectedItems[0].Tag;
+            var selectedSong = (Song)songsListView.SelectedItems[0].Tag;
             Debug.WriteLine($"Play song {selectedSong}");
         }
 
