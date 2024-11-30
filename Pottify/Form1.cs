@@ -23,8 +23,8 @@ namespace Pottify {
             songsListView.View = View.LargeIcon;
             Song.images.ImageSize = new Size(50, 50);
             songsListView.LargeImageList = Song.images;
-            songsListView.MouseDoubleClick += songDoubleClick;
-            songsListView.MouseClick += listViewClick;
+            songsListView.MouseDoubleClick += songDoubleClick; //used to play a song
+            songsListView.MouseClick += listViewClick; //used for right clicking a song
             songsListView.MultiSelect = false;
             songsListView.FullRowSelect = true;
             songsListView.Columns.Add("Title", 200);
@@ -32,7 +32,7 @@ namespace Pottify {
             songsListView.Columns.Add("Album", 200);
             songsListView.Columns.Add("Track", 70);
             songsListView.Columns.Add("Year", 100);
-            foreach (var s in Song.songsList)
+            foreach (var s in Song.songsList) //add songs to the list
             {
                 var listItem = new ListViewItem();
                 listItem.Text = s.title;
@@ -44,13 +44,12 @@ namespace Pottify {
                 listItem.Tag = s; //get data from here when clicked or something
                 songsListView.Items.Add(listItem);
             }
-            foreach (var i in songsListView.Items)
+            foreach (var i in songsListView.Items) //create a copy of the list for searching
             {
                 fullList.Add((ListViewItem)i);
             }
-            // fullList.AddRange((IEnumerable<ListViewItem>)songsListView.Items); //need to create a copy for filtering
-            //set autocomplete source
-            var songs = new AutoCompleteStringCollection();
+            
+            var songs = new AutoCompleteStringCollection(); //set autocomplete source
             foreach (var title in Song.songsList.Select(s => s.title))
             {
                 songs.Add(title);
@@ -93,7 +92,6 @@ namespace Pottify {
                     editSong.Click += editSongEvent;
                     var deleteSong = new ToolStripMenuItem("Delete song");
                     deleteSong.Click += deleteSongEvent;
-
 
                     //child items (playlists)
                     var playlist1 = new ToolStripMenuItem("Playlist 1");
