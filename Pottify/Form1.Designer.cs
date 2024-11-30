@@ -28,6 +28,11 @@ namespace Pottify {
             textSearch = new TextBox();
             btnDetails = new Button();
             btnImages = new Button();
+            btnCreatePlaylist = new Button();
+            btnAll = new Button();
+            button2 = new Button();
+            button3 = new Button();
+            button4 = new Button();
             SuspendLayout();
             // 
             // songsListView
@@ -51,7 +56,7 @@ namespace Pottify {
             // 
             // btnDetails
             // 
-            btnDetails.Location = new Point(12, 277);
+            btnDetails.Location = new Point(12, 577);
             btnDetails.Name = "btnDetails";
             btnDetails.Size = new Size(112, 23);
             btnDetails.TabIndex = 4;
@@ -61,7 +66,7 @@ namespace Pottify {
             // 
             // btnImages
             // 
-            btnImages.Location = new Point(12, 306);
+            btnImages.Location = new Point(12, 606);
             btnImages.Name = "btnImages";
             btnImages.Size = new Size(112, 23);
             btnImages.TabIndex = 5;
@@ -69,18 +74,72 @@ namespace Pottify {
             btnImages.UseVisualStyleBackColor = true;
             btnImages.Click += btnImages_Click;
             // 
+            // btnCreatePlaylist
+            // 
+            btnCreatePlaylist.Location = new Point(12, 635);
+            btnCreatePlaylist.Name = "btnCreatePlaylist";
+            btnCreatePlaylist.Size = new Size(112, 23);
+            btnCreatePlaylist.TabIndex = 6;
+            btnCreatePlaylist.Text = "Create playlist";
+            btnCreatePlaylist.UseVisualStyleBackColor = true;
+            btnCreatePlaylist.Click += btnCreatePlaylist_Click;
+            // 
+            // btnAll
+            // 
+            btnAll.Location = new Point(12, 95);
+            btnAll.Name = "btnAll";
+            btnAll.Size = new Size(75, 23);
+            btnAll.TabIndex = 7;
+            btnAll.Text = "All songs";
+            btnAll.UseVisualStyleBackColor = true;
+            btnAll.Click += btnAll_Click;
+            // 
+            // button2
+            // 
+            button2.Location = new Point(12, 124);
+            button2.Name = "button2";
+            button2.Size = new Size(75, 23);
+            button2.TabIndex = 8;
+            button2.Text = "Albums";
+            button2.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            button3.Location = new Point(12, 153);
+            button3.Name = "button3";
+            button3.Size = new Size(75, 23);
+            button3.TabIndex = 9;
+            button3.Text = "Artists";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += btnArtists_Click_1;
+            // 
+            // button4
+            // 
+            button4.Location = new Point(12, 182);
+            button4.Name = "button4";
+            button4.Size = new Size(75, 23);
+            button4.TabIndex = 10;
+            button4.Text = "Playlists";
+            button4.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1071, 670);
+            Controls.Add(button4);
+            Controls.Add(button3);
+            Controls.Add(button2);
+            Controls.Add(btnAll);
+            Controls.Add(btnCreatePlaylist);
             Controls.Add(btnImages);
             Controls.Add(btnDetails);
             Controls.Add(textSearch);
             Controls.Add(songsListView);
             Margin = new Padding(3, 2, 3, 2);
             Name = "Form1";
-            Text = "Form1";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Pottify";
             ResumeLayout(false);
             PerformLayout();
         }
@@ -90,5 +149,10 @@ namespace Pottify {
         private TextBox textSearch;
         private Button btnDetails;
         private Button btnImages;
+        private Button btnCreatePlaylist;
+        private Button btnAll;
+        private Button button2;
+        private Button button3;
+        private Button button4;
     }
 }
