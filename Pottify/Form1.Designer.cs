@@ -28,6 +28,7 @@ namespace Pottify {
             textSearch = new TextBox();
             btnDetails = new Button();
             btnImages = new Button();
+            btnCreatePlaylist = new Button();
             SuspendLayout();
             // 
             // songsListView
@@ -51,7 +52,7 @@ namespace Pottify {
             // 
             // btnDetails
             // 
-            btnDetails.Location = new Point(12, 277);
+            btnDetails.Location = new Point(12, 577);
             btnDetails.Name = "btnDetails";
             btnDetails.Size = new Size(112, 23);
             btnDetails.TabIndex = 4;
@@ -61,7 +62,7 @@ namespace Pottify {
             // 
             // btnImages
             // 
-            btnImages.Location = new Point(12, 306);
+            btnImages.Location = new Point(12, 606);
             btnImages.Name = "btnImages";
             btnImages.Size = new Size(112, 23);
             btnImages.TabIndex = 5;
@@ -69,18 +70,30 @@ namespace Pottify {
             btnImages.UseVisualStyleBackColor = true;
             btnImages.Click += btnImages_Click;
             // 
+            // btnCreatePlaylist
+            // 
+            btnCreatePlaylist.Location = new Point(12, 635);
+            btnCreatePlaylist.Name = "btnCreatePlaylist";
+            btnCreatePlaylist.Size = new Size(112, 23);
+            btnCreatePlaylist.TabIndex = 6;
+            btnCreatePlaylist.Text = "Create playlist";
+            btnCreatePlaylist.UseVisualStyleBackColor = true;
+            btnCreatePlaylist.Click += btnCreatePlaylist_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1071, 670);
+            Controls.Add(btnCreatePlaylist);
             Controls.Add(btnImages);
             Controls.Add(btnDetails);
             Controls.Add(textSearch);
             Controls.Add(songsListView);
             Margin = new Padding(3, 2, 3, 2);
             Name = "Form1";
-            Text = "Form1";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Pottify";
             ResumeLayout(false);
             PerformLayout();
         }
@@ -90,5 +103,6 @@ namespace Pottify {
         private TextBox textSearch;
         private Button btnDetails;
         private Button btnImages;
+        private Button btnCreatePlaylist;
     }
 }
