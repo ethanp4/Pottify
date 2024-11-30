@@ -98,16 +98,19 @@ namespace Pottify {
                     deleteSong.Click += deleteSongEvent;
 
                     //child items (playlists)
-                    var playlist1 = new ToolStripMenuItem("Playlist 1");
-                    playlist1.Tag = "Fake playlist object 1";
-                    playlist1.Click += addToPlaylistEvent;
-                    var playlist2 = new ToolStripMenuItem("Playlist 2");
-                    playlist2.Tag = "Fake playlist object 2";
-                    playlist2.Click += addToPlaylistEvent;
+                    foreach (var p in Playlist.getAllPlaylists())
+                    {
+                        var playlist = new ToolStripMenuItem(p.name);
+                        playlist.Tag = p;
+                        playlist.Click += addToPlaylistEvent;
+                        playlistsParent.DropDownItems.Add(playlist);
+                    }
 
-                    //add the children
-                    playlistsParent.DropDownItems.Add(playlist1);
-                    playlistsParent.DropDownItems.Add(playlist2);
+                    if (Playlist.getAllPlaylists().Count == 0)
+                    {
+                        var placeholder = new ToolStripMenuItem("No playlists have been added");
+                        playlistsParent.DropDownItems.Add(placeholder);
+                    }
 
                     //add the items to the context menu
                     songContextMenu.Items.Add(playlistsParent);
@@ -158,6 +161,16 @@ namespace Pottify {
         private void btnImages_Click(object sender, EventArgs e)
         {
             songsListView.View = View.LargeIcon;
+        }
+
+        private void btnCreatePlaylist_Click(object sender, EventArgs e)
+        {
+            var createForm = new CreatePlaylistForm();
+            var res = createForm.ShowDialog();
+            if (res == DialogResult.OK)
+            {
+                new Playlist(createForm.name, createForm.description);
+            } 
         }
     }
 }
