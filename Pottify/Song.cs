@@ -12,8 +12,8 @@ namespace Pottify {
         public static List<Song> songsList { get; }
         public int id { get; }
         public string title { get; set; }
-        public string[] artist { get; set; }
-        public string[] genre { get; set; }
+        public string artist { get; set; }
+        public string genre { get; set; }
         public string album { get; set; }
         public string copyright { get; set; }
         public string comments { get; set; }
@@ -47,8 +47,8 @@ namespace Pottify {
             filePath = path;
             id = songsList.Count;
             title = tfile.Tag.Title;
-            artist = tfile.Tag.Performers;
-            genre = tfile.Tag.Genres;
+            artist = tfile.Tag.FirstPerformer;
+            genre = tfile.Tag.FirstGenre;
             album = tfile.Tag.Album;
             copyright = tfile.Tag.Copyright;
             comments = tfile.Tag.Comment;
@@ -69,10 +69,19 @@ namespace Pottify {
             songsList.Add(this);
         }
 
+        public Bitmap getImageAsBitmap()
+        {
+            var ms = new MemoryStream(picture.Data.Data);
+            ms.Seek(0, SeekOrigin.Begin);
+
+            var bmp = new Bitmap(ms);
+            return bmp;
+        }
+
         public void saveMetadata() {
             tfile.Tag.Title = title;
-            tfile.Tag.Performers = artist;
-            tfile.Tag.Genres = genre;
+            tfile.Tag.Performers = new string[]{artist};
+            tfile.Tag.Genres = new string[] { genre };
             tfile.Tag.Album = album;
             tfile.Tag.Copyright = copyright;
             tfile.Tag.Comment = comments;
