@@ -89,7 +89,6 @@ namespace Pottify {
             songsListView.Items.AddRange(res.ToArray());
         }
 
-
         private void btnDetails_Click(object sender, EventArgs e)
         {
             songsListView.View = View.Details;
