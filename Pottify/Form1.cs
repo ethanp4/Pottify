@@ -14,6 +14,11 @@ namespace Pottify {
             InitializeComponent();
             //https://github.com/mono/taglib-sharp
 
+            initSongs();
+        }
+
+        private void initSongs()
+        {
             var songsPath = "..\\..\\..\\Songs";
             // songsPath = @"C:\Users\Ethan\Music\";
             //load songs and set listview columns
@@ -48,7 +53,7 @@ namespace Pottify {
             {
                 fullList.Add((ListViewItem)i);
             }
-            
+
             var songs = new AutoCompleteStringCollection(); //set autocomplete source
             foreach (var title in Song.songsList.Select(s => s.title))
             {
