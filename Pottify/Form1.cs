@@ -7,7 +7,6 @@ namespace Pottify {
     public partial class Form1 : Form
     {
         private List<ListViewItem> fullList = new();
-        enum viewMode { ALL, ALBUM, PLAYLIST }
 
         public Form1()
         {
