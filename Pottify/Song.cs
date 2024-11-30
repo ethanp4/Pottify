@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using TagLib;
 
 namespace Pottify {
-    internal class Song {
+    public class Song {
         public static List<Song> songsList { get; }
         public int id { get; }
         public string title { get; set; }

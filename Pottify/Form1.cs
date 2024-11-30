@@ -8,8 +8,8 @@ namespace Pottify {
     {
         private List<ListViewItem> fullList = new();
         private List<string> artistList = new(); // Stores the list of unique artists
-        enum VIEWTYPE { ALL, ARTIST, PLAYLIST, ALBUM }
-        private VIEWTYPE viewType = VIEWTYPE.ALL;
+        enum VIEWTYPE { SONG, ARTIST, PLAYLIST, ALBUM }
+        private VIEWTYPE viewType = VIEWTYPE.SONG;
 
         public Form1()
         {
@@ -26,6 +26,7 @@ namespace Pottify {
             // songsPath = @"C:\Users\Ethan\Music\";
             //load songs and set listview columns
             Song.initSongList(songsPath);
+            LoadArtists(); // load artists into the artistList
             //changeView(viewMode.ALL);
 
             songsListView.View = View.LargeIcon;
@@ -42,15 +43,7 @@ namespace Pottify {
             songsListView.Columns.Add("Year", 100);
             foreach (var s in Song.songsList) //add songs to the list
             {
-                var listItem = new ListViewItem();
-                listItem.Text = s.title;
-                listItem.ImageKey = s.id.ToString();
-                listItem.SubItems.Add(s.artist[0]);
-                listItem.SubItems.Add(s.album);
-                listItem.SubItems.Add($"{s.trackNumber} of {s.trackCount}");
-                listItem.SubItems.Add(s.year == 0 ? "Not set" : s.year.ToString());
-                listItem.Tag = s; //get data from here when clicked or something
-                songsListView.Items.Add(listItem);
+                songsListView.Items.Add(createSongListViewItem(s));
             }
             foreach (var i in songsListView.Items) //create a copy of the list for searching
             {
@@ -65,8 +58,19 @@ namespace Pottify {
             textSearch.AutoCompleteMode = AutoCompleteMode.Suggest;
             textSearch.AutoCompleteSource = AutoCompleteSource.CustomSource;
             textSearch.AutoCompleteCustomSource = songs;
+        }
 
-            LoadArtists(); // load artists into the artistList
+        private ListViewItem createSongListViewItem(Song s)
+        {
+            var listItem = new ListViewItem();
+            listItem.Text = s.title;
+            listItem.ImageKey = s.id.ToString();
+            listItem.SubItems.Add(s.artist[0]);
+            listItem.SubItems.Add(s.album);
+            listItem.SubItems.Add($"{s.trackNumber} of {s.trackCount}");
+            listItem.SubItems.Add(s.year == 0 ? "Not set" : s.year.ToString());
+            listItem.Tag = s; //get data from here when clicked or something
+            return listItem;
         }
         ///////////////////////////////////////////ARTISTS VIEW////////////////////////////////////
         private void LoadArtists()
@@ -110,15 +114,9 @@ namespace Pottify {
 
             foreach (var s in songsByArtist)
             {
-                var listItem = new ListViewItem();
-                listItem.Text = s.title;
-                listItem.SubItems.Add(s.artist[0]); // Assuming the first artist is displayed
-                listItem.SubItems.Add(s.album);
-                listItem.SubItems.Add($"{s.trackNumber} of {s.trackCount}");
-                listItem.SubItems.Add(s.year == 0 ? "Not set" : s.year.ToString());
-                listItem.Tag = s; // Store song object in Tag
-                songsListView.Items.Add(listItem);
+                songsListView.Items.Add(createSongListViewItem(s));
             }
+            viewType = VIEWTYPE.SONG;
         }
         ///////////////////////////////EVENTS/////////////////////////////
         private void addToPlaylistEvent(object sender, EventArgs e)
@@ -131,6 +129,7 @@ namespace Pottify {
         private void editSongEvent(object sender, EventArgs e)
         {
             var targetSong = songsListView.SelectedItems[0].Tag;
+            var editForm = new SongInfoEditForm(targetSong);
             Debug.WriteLine($"Open edit form for {targetSong}");
         }
 
@@ -149,7 +148,7 @@ namespace Pottify {
                 if (focusedItem != null && focusedItem.Bounds.Contains(e.Location))
                     switch (viewType)
                     {
-                        case VIEWTYPE.ALL:
+                        case VIEWTYPE.SONG:
                             var songContextMenu = new ContextMenuStrip();
                             //parent items
                             var playlistsParent = new ToolStripMenuItem("Add to playlist");
@@ -177,7 +176,6 @@ namespace Pottify {
                             songContextMenu.Items.Add(playlistsParent);
                             songContextMenu.Items.Add(editSong);
                             songContextMenu.Items.Add(deleteSong);
-
                             songContextMenu.Show(Cursor.Position);
                             break;
                         case VIEWTYPE.ARTIST:
@@ -196,8 +194,7 @@ namespace Pottify {
         {
             switch (viewType)
             {
-                case VIEWTYPE.ALL:
-
+                case VIEWTYPE.SONG:
                     Song selectedSong = (Song)songsListView.SelectedItems[0].Tag;
                     Debug.WriteLine($"Play song {selectedSong}");
                     break;
@@ -251,8 +248,8 @@ namespace Pottify {
 
         private void btnAll_Click(object sender, EventArgs e) //change view contents
         {
-            if (viewType == VIEWTYPE.ALL) { return; } //do nothing if its already this
-            viewType = VIEWTYPE.ALL;
+            if (viewType == VIEWTYPE.SONG) { return; } //do nothing if its already this
+            viewType = VIEWTYPE.SONG;
             songsListView.Items.Clear();
             songsListView.Items.AddRange(fullList.ToArray()); // Restore full song list
             songsListView.Columns.Clear();
@@ -261,7 +258,6 @@ namespace Pottify {
             songsListView.Columns.Add("Album", 200);
             songsListView.Columns.Add("Track", 70);
             songsListView.Columns.Add("Year", 100);
-
         }
 
         //Event handler for "Artists" button
@@ -279,7 +275,7 @@ namespace Pottify {
             if (res == DialogResult.OK)
             {
                 new Playlist(createForm.name, createForm.description);
-            } 
+            }
         }
     }
 }
