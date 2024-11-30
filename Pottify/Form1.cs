@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Reflection;
 using System.IO;
+using System.Windows.Forms;
 
 namespace Pottify {
     public partial class Form1 : Form
@@ -23,6 +24,7 @@ namespace Pottify {
             Song.images.ImageSize = new Size(50, 50);
             songsListView.LargeImageList = Song.images;
             songsListView.MouseDoubleClick += songDoubleClick;
+            songsListView.MouseClick += listViewClick;
             songsListView.MultiSelect = false;
             songsListView.FullRowSelect = true;
             songsListView.Columns.Add("Title", 200);
@@ -58,10 +60,67 @@ namespace Pottify {
             textSearch.AutoCompleteCustomSource = songs;
         }
 
+        private void addToPlaylistEvent(object sender, EventArgs e)
+        {
+            var targetSong = songsListView.SelectedItems[0].Tag;
+            var playlist = ((ToolStripMenuItem)sender).Tag; //will be a playlist object
+            Debug.WriteLine($"Add song {targetSong} to playlist {playlist}");
+        }
+
+        private void editSongEvent(object sender, EventArgs e)
+        {
+            var targetSong = songsListView.SelectedItems[0].Tag;
+            Debug.WriteLine($"Open edit form for {targetSong}");
+        }
+
+        private void deleteSongEvent(object sender, EventArgs e)
+        {
+            var targetSong = songsListView.SelectedItems[0].Tag;
+            Debug.WriteLine($"Delete song {targetSong}");
+        }
+
+        private void listViewClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                var focusedItem = songsListView.FocusedItem;
+                if (focusedItem != null && focusedItem.Bounds.Contains(e.Location))
+                {
+                    var songContextMenu = new ContextMenuStrip();
+                    //parent items
+                    var playlistsParent = new ToolStripMenuItem("Add to playlist");
+                    var editSong = new ToolStripMenuItem("Edit song");
+                    editSong.Click += editSongEvent;
+                    var deleteSong = new ToolStripMenuItem("Delete song");
+                    deleteSong.Click += deleteSongEvent;
+
+
+                    //child items (playlists)
+                    var playlist1 = new ToolStripMenuItem("Playlist 1");
+                    playlist1.Tag = "Fake playlist object 1";
+                    playlist1.Click += addToPlaylistEvent;
+                    var playlist2 = new ToolStripMenuItem("Playlist 2");
+                    playlist2.Tag = "Fake playlist object 2";
+                    playlist2.Click += addToPlaylistEvent;
+
+                    //add the children
+                    playlistsParent.DropDownItems.Add(playlist1);
+                    playlistsParent.DropDownItems.Add(playlist2);
+
+                    //add the items to the context menu
+                    songContextMenu.Items.Add(playlistsParent);
+                    songContextMenu.Items.Add(editSong);
+                    songContextMenu.Items.Add(deleteSong);
+
+                    songContextMenu.Show(Cursor.Position);
+                }
+            }
+        }
+
         private void songDoubleClick(object sender, EventArgs e)
         {
             Song selectedSong = (Song)songsListView.SelectedItems[0].Tag;
-            Debug.WriteLine("song was double clicked " + selectedSong);
+            Debug.WriteLine($"Play song {selectedSong}");
         }
 
         //searching for now
