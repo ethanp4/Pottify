@@ -8,6 +8,8 @@ namespace Pottify {
     {
         private List<ListViewItem> fullList = new();
         private List<string> artistList = new(); // Stores the list of unique artists
+        enum VIEWTYPE { ALL, ARTIST, PLAYLIST, ALBUM }
+        private VIEWTYPE viewType = VIEWTYPE.ALL;
 
         public Form1()
         {
@@ -29,7 +31,7 @@ namespace Pottify {
             songsListView.View = View.LargeIcon;
             Song.images.ImageSize = new Size(50, 50);
             songsListView.LargeImageList = Song.images;
-            songsListView.MouseDoubleClick += songDoubleClick; //used to play a song
+            songsListView.MouseDoubleClick += itemDoubleClick; //used to play a song
             songsListView.MouseClick += listViewClick; //used for right clicking a song
             songsListView.MultiSelect = false;
             songsListView.FullRowSelect = true;
@@ -90,8 +92,6 @@ namespace Pottify {
                 songsListView.Items.Add(listItem);
             }
 
-            songsListView.MouseDoubleClick -= songDoubleClick;
-            songsListView.MouseDoubleClick += artistDoubleClick;
         }
 
         //show songs by a specific artist
@@ -119,18 +119,8 @@ namespace Pottify {
                 listItem.Tag = s; // Store song object in Tag
                 songsListView.Items.Add(listItem);
             }
-            songsListView.MouseDoubleClick -= artistDoubleClick;
-            songsListView.MouseDoubleClick += songDoubleClick;
         }
         ///////////////////////////////EVENTS/////////////////////////////
-        private void artistDoubleClick(object sender, EventArgs e)
-        {
-            var selectedArtist = songsListView.SelectedItems[0].Tag.ToString();
-            Debug.WriteLine("artist was double clicked: " + selectedArtist);
-
-            ShowSongsByArtist(selectedArtist);
-        }
-
         private void addToPlaylistEvent(object sender, EventArgs e)
         {
             var targetSong = songsListView.SelectedItems[0].Tag;
@@ -152,48 +142,76 @@ namespace Pottify {
 
         private void listViewClick(object sender, MouseEventArgs e)
         {
+
             if (e.Button == MouseButtons.Right)
             {
                 var focusedItem = songsListView.FocusedItem;
                 if (focusedItem != null && focusedItem.Bounds.Contains(e.Location))
+                    switch (viewType)
+                    {
+                        case VIEWTYPE.ALL:
+                            var songContextMenu = new ContextMenuStrip();
+                            //parent items
+                            var playlistsParent = new ToolStripMenuItem("Add to playlist");
+                            var editSong = new ToolStripMenuItem("Edit song");
+                            editSong.Click += editSongEvent;
+                            var deleteSong = new ToolStripMenuItem("Delete song");
+                            deleteSong.Click += deleteSongEvent;
+
+                            //child items (playlists)
+                            foreach (var p in Playlist.getAllPlaylists())
+                            {
+                                var playlist = new ToolStripMenuItem(p.name);
+                                playlist.Tag = p;
+                                playlist.Click += addToPlaylistEvent;
+                                playlistsParent.DropDownItems.Add(playlist);
+                            }
+
+                            if (Playlist.getAllPlaylists().Count == 0)
+                            {
+                                var placeholder = new ToolStripMenuItem("No playlists have been added");
+                                playlistsParent.DropDownItems.Add(placeholder);
+                            }
+
+                            //add the items to the context menu
+                            songContextMenu.Items.Add(playlistsParent);
+                            songContextMenu.Items.Add(editSong);
+                            songContextMenu.Items.Add(deleteSong);
+
+                            songContextMenu.Show(Cursor.Position);
+                            break;
+                        case VIEWTYPE.ARTIST:
+                            break;
+                        case VIEWTYPE.PLAYLIST:
+                            break;
+                        case VIEWTYPE.ALBUM:
+                            break;
+                    }
                 {
-                    var songContextMenu = new ContextMenuStrip();
-                    //parent items
-                    var playlistsParent = new ToolStripMenuItem("Add to playlist");
-                    var editSong = new ToolStripMenuItem("Edit song");
-                    editSong.Click += editSongEvent;
-                    var deleteSong = new ToolStripMenuItem("Delete song");
-                    deleteSong.Click += deleteSongEvent;
-
-                    //child items (playlists)
-                    foreach (var p in Playlist.getAllPlaylists())
-                    {
-                        var playlist = new ToolStripMenuItem(p.name);
-                        playlist.Tag = p;
-                        playlist.Click += addToPlaylistEvent;
-                        playlistsParent.DropDownItems.Add(playlist);
-                    }
-
-                    if (Playlist.getAllPlaylists().Count == 0)
-                    {
-                        var placeholder = new ToolStripMenuItem("No playlists have been added");
-                        playlistsParent.DropDownItems.Add(placeholder);
-                    }
-
-                    //add the items to the context menu
-                    songContextMenu.Items.Add(playlistsParent);
-                    songContextMenu.Items.Add(editSong);
-                    songContextMenu.Items.Add(deleteSong);
-
-                    songContextMenu.Show(Cursor.Position);
                 }
             }
         }
 
-        private void songDoubleClick(object sender, EventArgs e)
+        private void itemDoubleClick(object sender, EventArgs e)
         {
-            var selectedSong = (Song)songsListView.SelectedItems[0].Tag;
-            Debug.WriteLine($"Play song {selectedSong}");
+            switch (viewType)
+            {
+                case VIEWTYPE.ALL:
+
+                    Song selectedSong = (Song)songsListView.SelectedItems[0].Tag;
+                    Debug.WriteLine($"Play song {selectedSong}");
+                    break;
+                case VIEWTYPE.ARTIST:
+                    var selectedArtist = songsListView.SelectedItems[0].Tag.ToString();
+                    Debug.WriteLine("artist was double clicked: " + selectedArtist);
+                    ShowSongsByArtist(selectedArtist);
+                    break;
+                case VIEWTYPE.PLAYLIST:
+                    break;
+                case VIEWTYPE.ALBUM:
+                    break;
+            }
+
         }
 
         //searching for now
@@ -233,6 +251,8 @@ namespace Pottify {
 
         private void btnAll_Click(object sender, EventArgs e) //change view contents
         {
+            if (viewType == VIEWTYPE.ALL) { return; } //do nothing if its already this
+            viewType = VIEWTYPE.ALL;
             songsListView.Items.Clear();
             songsListView.Items.AddRange(fullList.ToArray()); // Restore full song list
             songsListView.Columns.Clear();
@@ -242,13 +262,13 @@ namespace Pottify {
             songsListView.Columns.Add("Track", 70);
             songsListView.Columns.Add("Year", 100);
 
-            songsListView.MouseDoubleClick -= artistDoubleClick;
-            songsListView.MouseDoubleClick += songDoubleClick;
         }
 
         //Event handler for "Artists" button
         private void btnArtists_Click_1(object sender, EventArgs e) //change view contents
         {
+            if (viewType == VIEWTYPE.ARTIST) { return; }
+            viewType = VIEWTYPE.ARTIST;
             ShowArtists();
         }
 
