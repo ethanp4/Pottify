@@ -18,16 +18,16 @@ namespace Pottify
         }
         private static void initialize()
         {
-            client = new("asdfghjkl");
-            client.Logger = new ConsoleLogger() { Level = LogLevel.Warning };
+            client = new("1312575696249426050");
+            client.Logger = new ConsoleLogger() { Level = LogLevel.Info };
             client.OnReady += (sender, e) =>
             {
-                Console.WriteLine("Received Ready from user {0}", e.User.Username);
+                Debug.WriteLine($"Received Ready from user {e.User.Username}");
             };
 
             client.OnPresenceUpdate += (sender, e) =>
             {
-                Console.WriteLine("Received Update! {0}", e.Presence);
+                Debug.WriteLine($"Received Update! {e.Presence.Details}");
             };
             client.Initialize();
         }
@@ -36,7 +36,7 @@ namespace Pottify
         {
             client.SetPresence(new RichPresence()
             {
-                Details = s.title,
+                Details = s.ToString(),
                 State = "Playing",
                 Assets = new Assets()
                 {
