@@ -34,6 +34,7 @@ namespace Pottify {
             button3 = new Button();
             button4 = new Button();
             songControls1 = new SongControls();
+            btnReload = new Button();
             SuspendLayout();
             // 
             // songsListView
@@ -130,11 +131,22 @@ namespace Pottify {
             songControls1.Size = new Size(234, 185);
             songControls1.TabIndex = 11;
             // 
+            // btnReload
+            // 
+            btnReload.Location = new Point(12, 372);
+            btnReload.Name = "btnReload";
+            btnReload.Size = new Size(112, 23);
+            btnReload.TabIndex = 12;
+            btnReload.Text = "Reload songs";
+            btnReload.UseVisualStyleBackColor = true;
+            btnReload.Click += btnReload_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1071, 670);
+            Controls.Add(btnReload);
             Controls.Add(songControls1);
             Controls.Add(button4);
             Controls.Add(button3);
@@ -164,5 +176,6 @@ namespace Pottify {
         private Button button3;
         private Button button4;
         private SongControls songControls1;
+        private Button btnReload;
     }
 }

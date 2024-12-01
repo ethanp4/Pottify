@@ -98,7 +98,7 @@
             btnShuffle.TabIndex = 5;
             btnShuffle.Text = "Shuffle";
             btnShuffle.UseVisualStyleBackColor = true;
-            btnShuffle.Click += btnShuffle_Click;
+            btnShuffle.Click += changePlayMode;
             // 
             // buttonLoop
             // 
@@ -108,7 +108,7 @@
             buttonLoop.TabIndex = 6;
             buttonLoop.Text = "Loop";
             buttonLoop.UseVisualStyleBackColor = true;
-            buttonLoop.Click += buttonLoop_Click;
+            buttonLoop.Click += changePlayMode;
             // 
             // SongControls
             // 

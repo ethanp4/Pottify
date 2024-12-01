@@ -295,5 +295,10 @@ namespace Pottify {
                 new Playlist(createForm.name, createForm.description);
             }
         }
+
+        private void btnReload_Click(object sender, EventArgs e)
+        {
+            reinitSongs();
+        }
     }
 }

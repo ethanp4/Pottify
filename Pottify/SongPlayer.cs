@@ -19,7 +19,28 @@ namespace Pottify
         static SongPlayer()
         {
             outputDevice = new WaveOutEvent(); //this object stays for the life of the application
-            //outputDevice.PlaybackStopped += stopSong;
+            outputDevice.PlaybackStopped += songFinishedTask;
+        }
+
+        private static void songFinishedTask(object? sender, StoppedEventArgs e)
+        {
+            Song nextSong;
+            switch (SongControls.instance.mode)
+            {
+                case SongControls.MODE.NORMAL:
+                    nextSong = Song.songsList[currentSong.id+1 % Song.songsList.Count]; //get next song or loop if reached end
+                    break;
+                case SongControls.MODE.SHUFFLE:
+                    nextSong = Song.getRandomSong();
+                    break;
+                case SongControls.MODE.REPEAT_SONG:
+                    nextSong = currentSong;
+                    break;
+                default:
+                    nextSong = Song.getRandomSong();
+                    break;
+            }
+            playSong(nextSong);
         }
 
         public static void playSong() //when no song object is passed then choose the best option depending on the state
@@ -37,8 +58,7 @@ namespace Pottify
                     Debug.WriteLine($"Resuming song {currentSong}");
                     break;
                 case PlaybackState.Stopped: //if theres nothing then play a random song
-                    var song = Song.songsList[new Random().Next(Song.songsList.Count)];
-                    playSong(song);
+                    playSong(Song.getRandomSong());
                     Debug.WriteLine("Playing random song");
                     break;
             }
@@ -63,16 +83,5 @@ namespace Pottify
             }
             SongControls.instance.setSongInfo(2, null);
         }
-
-        //public static void pauseSong()
-        //{
-        //    outputDevice.Pause();
-        //    SongControls.instance.setStopped();
-        //}
-
-        //public static void stopSong(object? sender, StoppedEventArgs e) {
-        //    outputDevice.Stop();
-        //    SongControls.instance.setStopped();
-        //}
     }
 }
