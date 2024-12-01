@@ -191,8 +191,9 @@ namespace Pottify {
         ///////////////////////////////EVENTS/////////////////////////////
         private void addToPlaylistEvent(object sender, EventArgs e)
         {
-            var targetSong = songsListView.SelectedItems[0].Tag;
-            var playlist = ((ToolStripMenuItem)sender).Tag; //will be a playlist object
+            var targetSong = (Song)songsListView.SelectedItems[0].Tag;
+            var playlist = (Playlist)((ToolStripMenuItem)sender).Tag; //will be a playlist object
+            playlist.addSong(targetSong);
             Debug.WriteLine($"Add song {targetSong} to playlist {playlist}");
         }
 
