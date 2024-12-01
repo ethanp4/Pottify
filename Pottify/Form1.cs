@@ -119,6 +119,7 @@ namespace Pottify {
                 listItem.SubItems.Add(s.album);
                 listItem.SubItems.Add($"{s.trackNumber} of {s.trackCount}");
                 listItem.SubItems.Add(s.year == 0 ? "Not set" : s.year.ToString());
+                listItem.ImageKey = Song.songsList.Where(s => s.album == album).ToList()[0].id.ToString();
                 listItem.Tag = s; // Store song object in Tag
                 songsListView.Items.Add(listItem);
             }
