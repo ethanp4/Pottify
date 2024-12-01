@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.IO;
 using System.Windows.Forms;
+using NAudio.Wave;
 
 namespace Pottify {
     public partial class Form1 : Form
@@ -17,6 +18,7 @@ namespace Pottify {
             InitializeComponent();
             //https://github.com/mono/taglib-sharp
 
+            var load = new LittleLoadingMessage();
             instance = this;
             oneTimeInitStuff();
             reinitSongs();
@@ -53,15 +55,7 @@ namespace Pottify {
             songsListView.Columns.Add("Year", 100);
             foreach (var s in Song.songsList) //add songs to the list
             {
-                var listItem = new ListViewItem();
-                listItem.Text = s.title;
-                listItem.ImageKey = s.id.ToString();
-                listItem.SubItems.Add(s.artist);
-                listItem.SubItems.Add(s.album);
-                listItem.SubItems.Add($"{s.trackNumber} of {s.trackCount}");
-                listItem.SubItems.Add(s.year == 0 ? "Not set" : s.year.ToString());
-                listItem.Tag = s; //get data from here when clicked or something
-                songsListView.Items.Add(listItem);
+                songsListView.Items.Add(createSongListViewItem(s));
             }
             foreach (var i in songsListView.Items) //create a copy of the list for searching
             {
@@ -123,16 +117,10 @@ namespace Pottify {
 
             foreach (var s in songsByAlbum)
             {
-                var listItem = new ListViewItem();
-                listItem.Text = s.title;
-                listItem.SubItems.Add(s.artist); // Assuming the first artist is displayed
-                listItem.SubItems.Add(s.album);
-                listItem.SubItems.Add($"{s.trackNumber} of {s.trackCount}");
-                listItem.SubItems.Add(s.year == 0 ? "Not set" : s.year.ToString());
-                listItem.ImageKey = Song.songsList.Where(s => s.album == album).ToList()[0].id.ToString();
-                listItem.Tag = s; // Store song object in Tag
-                songsListView.Items.Add(listItem);
+                songsListView.Items.Add(createSongListViewItem(s));
+
             }
+            viewType = VIEWTYPE.SONG;
         }
 
         ///////////////////////////////////////////ARTISTS VIEW////////////////////////////////////
@@ -183,16 +171,22 @@ namespace Pottify {
 
             foreach (var s in songsByArtist)
             {
-                var listItem = new ListViewItem();
-                listItem.Text = s.title;
-                listItem.SubItems.Add(s.artist); // Assuming the first artist is displayed
-                listItem.SubItems.Add(s.album);
-                listItem.SubItems.Add($"{s.trackNumber} of {s.trackCount}");
-                listItem.SubItems.Add(s.year == 0 ? "Not set" : s.year.ToString());
-                listItem.Tag = s; // Store song object in Tag
-                listItem.ImageKey = Song.songsList.Where(s => s.artist.Contains(artist)).ToList()[0].id.ToString();
-                songsListView.Items.Add(listItem);
+                songsListView.Items.Add(createSongListViewItem(s));
             }
+            viewType = VIEWTYPE.SONG;
+        }
+
+        private ListViewItem createSongListViewItem(Song s)
+        {
+            var listItem = new ListViewItem();
+            listItem.Text = s.title;
+            listItem.ImageKey = s.id.ToString();
+            listItem.SubItems.Add(s.artist);
+            listItem.SubItems.Add(s.album);
+            listItem.SubItems.Add($"{s.trackNumber} of {s.trackCount}");
+            listItem.SubItems.Add(s.year == 0 ? "Not set" : s.year.ToString());
+            listItem.Tag = s; //get data from here when clicked or something
+            return listItem;
         }
         ///////////////////////////////EVENTS/////////////////////////////
         private void addToPlaylistEvent(object sender, EventArgs e)
@@ -220,7 +214,7 @@ namespace Pottify {
             Debug.WriteLine($"Delete song {targetSong}");
         }
 
-        private void listViewClick(object sender, MouseEventArgs e)
+        private void listViewClick(object sender, MouseEventArgs e) //for right click actions
         {
 
             if (e.Button == MouseButtons.Right)
@@ -261,16 +255,10 @@ namespace Pottify {
                             songContextMenu.Show(Cursor.Position);
                             break;
                         case VIEWTYPE.ARTIST:
-                            var selectedArtist = songsListView.SelectedItems[0].Tag.ToString();
-                            Debug.WriteLine("artist was double clicked: " + selectedArtist);
-                            ShowSongsByArtist(selectedArtist);
                             break;
                         case VIEWTYPE.PLAYLIST:
                             break;
                         case VIEWTYPE.ALBUM:
-                            var selectedAlbum = songsListView.SelectedItems[0].Tag.ToString();
-                            Debug.WriteLine("album was double clicked: " + selectedAlbum);
-                            ShowSongsByAlbum(selectedAlbum);
                             break;
                             
                     }
@@ -284,39 +272,25 @@ namespace Pottify {
             switch (viewType)
             {
                 case VIEWTYPE.SONG:
-
                     Song selectedSong = (Song)songsListView.SelectedItems[0].Tag;
-                    SongPlayer.ignoreNextSongFinishEvent = true;
+                    if (SongPlayer.getStatus() == PlaybackState.Playing) //if switching songs, then do this, otherwise it will automatically play a different song via the songFinishEvent
+                    {
+                        SongPlayer.ignoreNextSongFinishEvent = true;
+                    }
                     SongPlayer.playSong(selectedSong);
                     Debug.WriteLine($"Play song {selectedSong}");
                     break;
                 case VIEWTYPE.ARTIST:
-                    if (songsListView.Columns[0].Text == "Artist")
-                    {
-                        var selectedArtist = songsListView.SelectedItems[0].Tag.ToString();
-                        Debug.WriteLine("Artist was double-clicked: " + selectedArtist);
-                        ShowSongsByArtist(selectedArtist);
-                    }
-                    else
-                    {
-                        Song selectedSongArtist = (Song)songsListView.SelectedItems[0].Tag;
-                        Debug.WriteLine($"Play song {selectedSongArtist}");
-                    }
+                    var selectedArtist = songsListView.SelectedItems[0].Tag.ToString();
+                    Debug.WriteLine("Artist was double-clicked: " + selectedArtist);
+                    ShowSongsByArtist(selectedArtist);
                     break;
                 case VIEWTYPE.PLAYLIST:
                     break;
                 case VIEWTYPE.ALBUM:
-                    if (songsListView.Columns[0].Text == "Album")
-                    {
-                        var selectedAlbum = songsListView.SelectedItems[0].Tag.ToString();
-                        Debug.WriteLine("Album was double-clicked: " + selectedAlbum);
-                        ShowSongsByAlbum(selectedAlbum);
-                    }
-                    else
-                    {
-                        Song selectedSongAlbum = (Song)songsListView.SelectedItems[0].Tag;
-                        Debug.WriteLine($"Play song {selectedSongAlbum}");
-                    }
+                    var selectedAlbum = songsListView.SelectedItems[0].Tag.ToString();
+                    Debug.WriteLine("Album was double-clicked: " + selectedAlbum);
+                    ShowSongsByAlbum(selectedAlbum);
                     break;
             }
 
@@ -359,7 +333,8 @@ namespace Pottify {
 
         private void btnAll_Click(object sender, EventArgs e) //change view contents
         {
-            if (viewType == VIEWTYPE.SONG) { return; } //do nothing if its already this
+            //if (viewType == VIEWTYPE.SONG) { return; } //do nothing if its already this
+            reinitSongs();
             viewType = VIEWTYPE.SONG;
             songsListView.Items.Clear();
             songsListView.Items.AddRange(fullList.ToArray()); // Restore full song list
@@ -388,12 +363,6 @@ namespace Pottify {
             {
                 new Playlist(createForm.name, createForm.description);
             }
-        }
-
-
-        private void btnReload_Click(object sender, EventArgs e)
-        {
-            reinitSongs();
         }
 
         private void btnAlbum_Click(object sender, EventArgs e)

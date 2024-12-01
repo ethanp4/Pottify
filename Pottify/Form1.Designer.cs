@@ -33,7 +33,6 @@ namespace Pottify {
             btnAlbum = new Button();
             btnArtist = new Button();
             button4 = new Button();
-            btnReload = new Button();
             songControls1 = new SongControls();
             SuspendLayout();
             // 
@@ -132,18 +131,6 @@ namespace Pottify {
             button4.Text = "Playlists";
             button4.UseVisualStyleBackColor = true;
             // 
-            // btnReload
-            // 
-            btnReload.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnReload.Location = new Point(12, 396);
-            btnReload.Margin = new Padding(3, 2, 3, 2);
-            btnReload.Name = "btnReload";
-            btnReload.Size = new Size(214, 29);
-            btnReload.TabIndex = 12;
-            btnReload.Text = "Reload songs";
-            btnReload.UseVisualStyleBackColor = true;
-            btnReload.Click += btnReload_Click;
-            // 
             // songControls1
             // 
             songControls1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
@@ -158,7 +145,6 @@ namespace Pottify {
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1090, 687);
             Controls.Add(songControls1);
-            Controls.Add(btnReload);
             Controls.Add(button4);
             Controls.Add(btnArtist);
             Controls.Add(btnAlbum);
@@ -186,7 +172,6 @@ namespace Pottify {
         private Button btnAlbum;
         private Button btnArtist;
         private Button button4;
-        private Button btnReload;
         private SongControls songControls1;
     }
 }
