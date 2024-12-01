@@ -21,9 +21,14 @@ namespace Pottify
             outputDevice = new WaveOutEvent(); //this object stays for the life of the application
             outputDevice.PlaybackStopped += songFinishedTask;
         }
-
+        public static bool ignoreNextSongFinishEvent = false;
         private static void songFinishedTask(object? sender, StoppedEventArgs e)
         {
+            if (ignoreNextSongFinishEvent)
+            {
+                ignoreNextSongFinishEvent = false;
+                return;
+            }
             Song nextSong;
             switch (SongControls.instance.mode)
             {
