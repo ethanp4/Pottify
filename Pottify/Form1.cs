@@ -276,7 +276,7 @@ namespace Pottify {
                     Song selectedSong = (Song)songsListView.SelectedItems[0].Tag;
                     if (SongPlayer.getStatus() == PlaybackState.Playing) //if switching songs, then do this, otherwise it will automatically play a different song via the songFinishEvent
                     {
-                        SongPlayer.ignoreNextSongFinishEvent = true;
+                        SongPlayer.skipSongFinishedEvent = true;
                     }
                     SongPlayer.playSong(selectedSong);
                     Debug.WriteLine($"Play song {selectedSong}");
