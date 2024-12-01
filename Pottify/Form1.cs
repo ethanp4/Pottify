@@ -2,33 +2,28 @@ using System.Diagnostics;
 using System.Reflection;
 using System.IO;
 using System.Windows.Forms;
+using DarkModeForms;
 
 namespace Pottify {
     public partial class Form1 : Form
     {
         private List<ListViewItem> fullList = new();
         private List<string> artistList = new(); // Stores the list of unique artists
-        private List<string> albumList = new();
-        enum VIEWTYPE { ALL, ARTIST, PLAYLIST, ALBUM }
-        private VIEWTYPE viewType = VIEWTYPE.ALL;
-
+        enum VIEWTYPE { SONG, ARTIST, PLAYLIST, ALBUM }
+        private VIEWTYPE viewType = VIEWTYPE.SONG;
+        public static Form1 instance { get; private set; }
         public Form1()
         {
             InitializeComponent();
             //https://github.com/mono/taglib-sharp
 
-            initSongs();
+            instance = this;
+            oneTimeInitStuff();
+            reinitSongs();
         }
 
-        ////////////////////Create initial view//////////////////////////////
-        private void initSongs()
+        private void oneTimeInitStuff()
         {
-            var songsPath = "..\\..\\..\\Songs";
-            // songsPath = @"C:\Users\Ethan\Music\";
-            //load songs and set listview columns
-            Song.initSongList(songsPath);
-            //changeView(viewMode.ALL);
-
             songsListView.View = View.LargeIcon;
             Song.images.ImageSize = new Size(50, 50);
             songsListView.LargeImageList = Song.images;
@@ -36,6 +31,21 @@ namespace Pottify {
             songsListView.MouseClick += listViewClick; //used for right clicking a song
             songsListView.MultiSelect = false;
             songsListView.FullRowSelect = true;
+        }
+
+        ////////////////////Create initial view//////////////////////////////
+        public void reinitSongs() //this function is rerun if stuff is edited
+        {
+            var songsPath = "..\\..\\..\\Songs";
+             //songsPath = @"C:\Users\Ethan\Music\";
+            //load songs and set listview columns
+            Song.initSongList(songsPath);
+            LoadArtists(); // load artists into the artistList
+            //changeView(viewMode.ALL);
+
+            songsListView.Columns.Clear();
+            songsListView.Items.Clear();
+            fullList.Clear();
             songsListView.Columns.Add("Title", 200);
             songsListView.Columns.Add("Artist", 200);
             songsListView.Columns.Add("Album", 200);
@@ -128,8 +138,12 @@ namespace Pottify {
         ///////////////////////////////////////////ARTISTS VIEW////////////////////////////////////
         private void LoadArtists()
         {
+            if (artistList.Count > 0)
+            {
+                artistList.Clear();
+            }
             artistList = Song.songsList
-                .SelectMany(s => s.artist)
+                .Select(s => s.artist)
                 .Distinct()
                 .OrderBy(a => a)
                 .ToList();
@@ -190,8 +204,14 @@ namespace Pottify {
 
         private void editSongEvent(object sender, EventArgs e)
         {
-            var targetSong = songsListView.SelectedItems[0].Tag;
+            var targetSong = (Song)songsListView.SelectedItems[0].Tag;
+            var editForm = new SongInfoEditForm(targetSong, SongPlayer.currentSong == targetSong ? true : false);
+            editForm.Show();
             Debug.WriteLine($"Open edit form for {targetSong}");
+            //if (res == DialogResult.OK)
+            //{
+            //    reinitSongs(); //reload all songs for now, which isnt efficient
+            //}
         }
 
         private void deleteSongEvent(object sender, EventArgs e)
@@ -266,6 +286,8 @@ namespace Pottify {
                 case VIEWTYPE.ALL:
 
                     Song selectedSong = (Song)songsListView.SelectedItems[0].Tag;
+                    SongPlayer.ignoreNextSongFinishEvent = true;
+                    SongPlayer.playSong(selectedSong);
                     Debug.WriteLine($"Play song {selectedSong}");
                     break;
                 case VIEWTYPE.ARTIST:
@@ -368,11 +390,18 @@ namespace Pottify {
             }
         }
 
+
+        private void btnReload_Click(object sender, EventArgs e)
+        {
+            reinitSongs();
+        }
+
         private void btnAlbum_Click(object sender, EventArgs e)
         {
             if (viewType == VIEWTYPE.ALBUM) { return; } 
             viewType = VIEWTYPE.ALBUM; 
             ShowAlbums();
+
         }
     }
 }
