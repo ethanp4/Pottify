@@ -197,6 +197,7 @@ namespace Pottify {
             {
                 case VIEWTYPE.SONG:
                     Song selectedSong = (Song)songsListView.SelectedItems[0].Tag;
+                    SongPlayer.playSong(selectedSong);
                     Debug.WriteLine($"Play song {selectedSong}");
                     break;
                 case VIEWTYPE.ARTIST:
