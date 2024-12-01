@@ -54,6 +54,7 @@ namespace Pottify
 
         private void btnStop_Click(object sender, EventArgs e)
         {
+            SongPlayer.ignoreNextSongFinishEvent = true;
             SongPlayer.stop();
         }
 

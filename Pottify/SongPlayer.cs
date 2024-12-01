@@ -16,6 +16,11 @@ namespace Pottify
         private static WaveOutEvent outputDevice;
         private static AudioFileReader audioFile;
 
+        public static PlaybackState getStatus()
+        {
+            return outputDevice.PlaybackState;
+        }
+
         static SongPlayer()
         {
             outputDevice = new WaveOutEvent(); //this object stays for the life of the application
@@ -78,6 +83,7 @@ namespace Pottify
             outputDevice.Init(audioFile);
             outputDevice.Play();
             SongControls.instance.setSongInfo(0, currentSong); //set ui to playing
+            DiscordRichPresence.setPresence(s);
         }
 
         public static void stop()
