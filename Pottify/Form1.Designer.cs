@@ -33,6 +33,7 @@ namespace Pottify {
             button2 = new Button();
             button3 = new Button();
             button4 = new Button();
+            songControls1 = new SongControls();
             SuspendLayout();
             // 
             // songsListView
@@ -122,11 +123,19 @@ namespace Pottify {
             button4.Text = "Playlists";
             button4.UseVisualStyleBackColor = true;
             // 
+            // songControls1
+            // 
+            songControls1.Location = new Point(12, 459);
+            songControls1.Name = "songControls1";
+            songControls1.Size = new Size(200, 112);
+            songControls1.TabIndex = 11;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1071, 670);
+            Controls.Add(songControls1);
             Controls.Add(button4);
             Controls.Add(button3);
             Controls.Add(button2);
@@ -154,5 +163,6 @@ namespace Pottify {
         private Button button2;
         private Button button3;
         private Button button4;
+        private SongControls songControls1;
     }
 }

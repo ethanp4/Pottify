@@ -88,7 +88,7 @@ namespace Pottify {
             tfile.Tag.Year = year;
             tfile.Tag.Track = trackNumber;
             tfile.Tag.TrackCount = trackCount;
-            tfile.Tag.Pictures[0] = picture;
+            //tfile.Tag.Pictures[0] = picture;
             tfile.Save();
             Debug.WriteLine("Saved song data to file for " + this);
         }
@@ -99,7 +99,7 @@ namespace Pottify {
         }
         public override string ToString()
         {
-            return $"{title} by {artist[0]}";
+            return $"{title} by {artist}";
         }
     }
 }
