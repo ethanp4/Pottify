@@ -2,13 +2,13 @@ using System.Diagnostics;
 using System.Reflection;
 using System.IO;
 using System.Windows.Forms;
-using DarkModeForms;
 
 namespace Pottify {
     public partial class Form1 : Form
     {
         private List<ListViewItem> fullList = new();
         private List<string> artistList = new(); // Stores the list of unique artists
+        private List<string> albumList = new();
         enum VIEWTYPE { SONG, ARTIST, PLAYLIST, ALBUM }
         private VIEWTYPE viewType = VIEWTYPE.SONG;
         public static Form1 instance { get; private set; }
@@ -56,7 +56,7 @@ namespace Pottify {
                 var listItem = new ListViewItem();
                 listItem.Text = s.title;
                 listItem.ImageKey = s.id.ToString();
-                listItem.SubItems.Add(s.artist[0]);
+                listItem.SubItems.Add(s.artist);
                 listItem.SubItems.Add(s.album);
                 listItem.SubItems.Add($"{s.trackNumber} of {s.trackCount}");
                 listItem.SubItems.Add(s.year == 0 ? "Not set" : s.year.ToString());
@@ -125,7 +125,7 @@ namespace Pottify {
             {
                 var listItem = new ListViewItem();
                 listItem.Text = s.title;
-                listItem.SubItems.Add(s.artist[0]); // Assuming the first artist is displayed
+                listItem.SubItems.Add(s.artist); // Assuming the first artist is displayed
                 listItem.SubItems.Add(s.album);
                 listItem.SubItems.Add($"{s.trackNumber} of {s.trackCount}");
                 listItem.SubItems.Add(s.year == 0 ? "Not set" : s.year.ToString());
@@ -185,7 +185,7 @@ namespace Pottify {
             {
                 var listItem = new ListViewItem();
                 listItem.Text = s.title;
-                listItem.SubItems.Add(s.artist[0]); // Assuming the first artist is displayed
+                listItem.SubItems.Add(s.artist); // Assuming the first artist is displayed
                 listItem.SubItems.Add(s.album);
                 listItem.SubItems.Add($"{s.trackNumber} of {s.trackCount}");
                 listItem.SubItems.Add(s.year == 0 ? "Not set" : s.year.ToString());
@@ -229,7 +229,7 @@ namespace Pottify {
                 if (focusedItem != null && focusedItem.Bounds.Contains(e.Location))
                     switch (viewType)
                     {
-                        case VIEWTYPE.ALL:
+                        case VIEWTYPE.SONG:
                             var songContextMenu = new ContextMenuStrip();
                             //parent items
                             var playlistsParent = new ToolStripMenuItem("Add to playlist");
@@ -283,7 +283,7 @@ namespace Pottify {
         {
             switch (viewType)
             {
-                case VIEWTYPE.ALL:
+                case VIEWTYPE.SONG:
 
                     Song selectedSong = (Song)songsListView.SelectedItems[0].Tag;
                     SongPlayer.ignoreNextSongFinishEvent = true;
@@ -359,8 +359,8 @@ namespace Pottify {
 
         private void btnAll_Click(object sender, EventArgs e) //change view contents
         {
-            if (viewType == VIEWTYPE.ALL) { return; } //do nothing if its already this
-            viewType = VIEWTYPE.ALL;
+            if (viewType == VIEWTYPE.SONG) { return; } //do nothing if its already this
+            viewType = VIEWTYPE.SONG;
             songsListView.Items.Clear();
             songsListView.Items.AddRange(fullList.ToArray()); // Restore full song list
             songsListView.Columns.Clear();
