@@ -33,6 +33,8 @@ namespace Pottify {
             btnAlbum = new Button();
             btnArtist = new Button();
             button4 = new Button();
+            songControls1 = new SongControls();
+            btnReload = new Button();
             SuspendLayout();
             // 
             // songsListView
@@ -56,8 +58,7 @@ namespace Pottify {
             // 
             // btnDetails
             // 
-            btnDetails.Location = new Point(14, 769);
-            btnDetails.Margin = new Padding(3, 4, 3, 4);
+            btnDetails.Location = new Point(12, 401);
             btnDetails.Name = "btnDetails";
             btnDetails.Size = new Size(128, 31);
             btnDetails.TabIndex = 4;
@@ -67,8 +68,7 @@ namespace Pottify {
             // 
             // btnImages
             // 
-            btnImages.Location = new Point(14, 808);
-            btnImages.Margin = new Padding(3, 4, 3, 4);
+            btnImages.Location = new Point(12, 430);
             btnImages.Name = "btnImages";
             btnImages.Size = new Size(128, 31);
             btnImages.TabIndex = 5;
@@ -78,8 +78,7 @@ namespace Pottify {
             // 
             // btnCreatePlaylist
             // 
-            btnCreatePlaylist.Location = new Point(14, 847);
-            btnCreatePlaylist.Margin = new Padding(3, 4, 3, 4);
+            btnCreatePlaylist.Location = new Point(12, 459);
             btnCreatePlaylist.Name = "btnCreatePlaylist";
             btnCreatePlaylist.Size = new Size(128, 31);
             btnCreatePlaylist.TabIndex = 6;
@@ -130,11 +129,30 @@ namespace Pottify {
             button4.Text = "Playlists";
             button4.UseVisualStyleBackColor = true;
             // 
+            // songControls1
+            // 
+            songControls1.Location = new Point(1, 487);
+            songControls1.Name = "songControls1";
+            songControls1.Size = new Size(234, 185);
+            songControls1.TabIndex = 11;
+            // 
+            // btnReload
+            // 
+            btnReload.Location = new Point(12, 372);
+            btnReload.Name = "btnReload";
+            btnReload.Size = new Size(112, 23);
+            btnReload.TabIndex = 12;
+            btnReload.Text = "Reload songs";
+            btnReload.UseVisualStyleBackColor = true;
+            btnReload.Click += btnReload_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1224, 893);
+            ClientSize = new Size(1071, 670);
+            Controls.Add(btnReload);
+            Controls.Add(songControls1);
             Controls.Add(button4);
             Controls.Add(btnArtist);
             Controls.Add(btnAlbum);
@@ -161,5 +179,7 @@ namespace Pottify {
         private Button btnAlbum;
         private Button btnArtist;
         private Button button4;
+        private SongControls songControls1;
+        private Button btnReload;
     }
 }
