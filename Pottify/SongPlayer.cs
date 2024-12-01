@@ -53,6 +53,7 @@ namespace Pottify
             playSong(nextSong);
         }
 
+
         public static void playSong() //when no song object is passed then choose the best option depending on the state
         {
             switch (outputDevice.PlaybackState)
