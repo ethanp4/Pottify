@@ -77,6 +77,12 @@ namespace Pottify {
             songsList.Add(this);
         }
 
+        public static Song getRandomSong()
+        {
+            var song = Song.songsList[new Random().Next(Song.songsList.Count)];
+            return song;
+        }
+
         public Bitmap getImageAsBitmap()
         {
             var ms = new MemoryStream(picture.Data.Data);

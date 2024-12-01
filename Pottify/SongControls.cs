@@ -20,8 +20,8 @@ namespace Pottify
             instance = this;
         }
 
-        enum MODE { NORMAL, REPEAT_SONG, SHUFFLE }
-        private MODE mode = MODE.NORMAL;
+        public enum MODE { NORMAL, REPEAT_SONG, SHUFFLE }
+        public MODE mode { get; private set; } = MODE.NORMAL;
 
         private void btnPlay_Click(object sender, EventArgs e) //when the song is paused or resumed from the control
         {
@@ -50,27 +50,32 @@ namespace Pottify
             labelInfo.AutoSize = false;
             labelInfo.Text = info;
         }
-        private void btnPrevious_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnNext_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void btnStop_Click(object sender, EventArgs e)
         {
             SongPlayer.stop();
         }
 
-        private void buttonLoop_Click(object sender, EventArgs e)
+        private void changePlayMode(object sender, EventArgs e)
+        {
+            if (mode != MODE.SHUFFLE)
+            {
+                mode = MODE.SHUFFLE;
+                btnShuffle.BackColor = Color.RebeccaPurple;
+            }
+            else
+            {
+                mode = MODE.NORMAL;
+                btnShuffle.BackColor = DefaultBackColor;
+            }
+        }
+
+        private void btnPrevious_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void btnShuffle_Click(object sender, EventArgs e)
+        private void btnNext_Click(object sender, EventArgs e)
         {
 
         }
