@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.IO;
 using System.Windows.Forms;
+using DarkModeForms;
 
 namespace Pottify {
     public partial class Form1 : Form
@@ -11,7 +12,6 @@ namespace Pottify {
         enum VIEWTYPE { SONG, ARTIST, PLAYLIST, ALBUM }
         private VIEWTYPE viewType = VIEWTYPE.SONG;
         public static Form1 instance { get; private set; }
-
         public Form1()
         {
             InitializeComponent();
