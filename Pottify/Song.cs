@@ -32,6 +32,15 @@ namespace Pottify {
         //the taglib file variable isnt publically accessible
         public static void initSongList(string songsPath)
         {
+            if (songsList.Count > 0) //clear if reinitializing
+            {
+                foreach(var s in songsList)
+                {
+                    s.tfile.Dispose();
+                }
+                songsList.Clear();
+
+            }
             var files = Directory.GetFiles(songsPath, "*.mp3");
             foreach (var f in files) {
                 new Song(f);
@@ -60,11 +69,10 @@ namespace Pottify {
 
             var ms = new MemoryStream(picture.Data.Data);
             ms.Seek(0, SeekOrigin.Begin);
-
             var bmp = new Bitmap(ms);
-            
             images.Images.Add(id.ToString(), bmp);
-
+            ms.Dispose();
+            
             // Debug.WriteLine($"Added song: {title} {artist[0]} {album} no.{trackNumber}");
             songsList.Add(this);
         }
@@ -73,8 +81,8 @@ namespace Pottify {
         {
             var ms = new MemoryStream(picture.Data.Data);
             ms.Seek(0, SeekOrigin.Begin);
-
             var bmp = new Bitmap(ms);
+            ms.Dispose();
             return bmp;
         }
 

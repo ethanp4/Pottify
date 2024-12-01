@@ -57,7 +57,7 @@ namespace Pottify {
             // 
             // btnDetails
             // 
-            btnDetails.Location = new Point(12, 577);
+            btnDetails.Location = new Point(12, 401);
             btnDetails.Name = "btnDetails";
             btnDetails.Size = new Size(112, 23);
             btnDetails.TabIndex = 4;
@@ -67,7 +67,7 @@ namespace Pottify {
             // 
             // btnImages
             // 
-            btnImages.Location = new Point(12, 606);
+            btnImages.Location = new Point(12, 430);
             btnImages.Name = "btnImages";
             btnImages.Size = new Size(112, 23);
             btnImages.TabIndex = 5;
@@ -77,7 +77,7 @@ namespace Pottify {
             // 
             // btnCreatePlaylist
             // 
-            btnCreatePlaylist.Location = new Point(12, 635);
+            btnCreatePlaylist.Location = new Point(12, 459);
             btnCreatePlaylist.Name = "btnCreatePlaylist";
             btnCreatePlaylist.Size = new Size(112, 23);
             btnCreatePlaylist.TabIndex = 6;
@@ -125,9 +125,9 @@ namespace Pottify {
             // 
             // songControls1
             // 
-            songControls1.Location = new Point(12, 459);
+            songControls1.Location = new Point(1, 487);
             songControls1.Name = "songControls1";
-            songControls1.Size = new Size(200, 112);
+            songControls1.Size = new Size(234, 185);
             songControls1.TabIndex = 11;
             // 
             // Form1

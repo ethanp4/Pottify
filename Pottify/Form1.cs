@@ -16,11 +16,23 @@ namespace Pottify {
             InitializeComponent();
             //https://github.com/mono/taglib-sharp
 
-            initSongs();
+            oneTimeInitStuff();
+            reinitSongs();
+        }
+
+        private void oneTimeInitStuff()
+        {
+            songsListView.View = View.LargeIcon;
+            Song.images.ImageSize = new Size(50, 50);
+            songsListView.LargeImageList = Song.images;
+            songsListView.MouseDoubleClick += itemDoubleClick; //used to play a song
+            songsListView.MouseClick += listViewClick; //used for right clicking a song
+            songsListView.MultiSelect = false;
+            songsListView.FullRowSelect = true;
         }
 
         ////////////////////Create initial view//////////////////////////////
-        private void initSongs()
+        private void reinitSongs() //this function is rerun if stuff is edited
         {
             var songsPath = "..\\..\\..\\Songs";
             // songsPath = @"C:\Users\Ethan\Music\";
@@ -29,13 +41,9 @@ namespace Pottify {
             LoadArtists(); // load artists into the artistList
             //changeView(viewMode.ALL);
 
-            songsListView.View = View.LargeIcon;
-            Song.images.ImageSize = new Size(50, 50);
-            songsListView.LargeImageList = Song.images;
-            songsListView.MouseDoubleClick += itemDoubleClick; //used to play a song
-            songsListView.MouseClick += listViewClick; //used for right clicking a song
-            songsListView.MultiSelect = false;
-            songsListView.FullRowSelect = true;
+            songsListView.Columns.Clear();
+            songsListView.Items.Clear();
+            fullList.Clear();
             songsListView.Columns.Add("Title", 200);
             songsListView.Columns.Add("Artist", 200);
             songsListView.Columns.Add("Album", 200);
@@ -75,6 +83,10 @@ namespace Pottify {
         ///////////////////////////////////////////ARTISTS VIEW////////////////////////////////////
         private void LoadArtists()
         {
+            if (artistList.Count > 0)
+            {
+                artistList.Clear();
+            }
             artistList = Song.songsList
                 .Select(s => s.artist)
                 .Distinct()
@@ -129,9 +141,13 @@ namespace Pottify {
         private void editSongEvent(object sender, EventArgs e)
         {
             var targetSong = (Song)songsListView.SelectedItems[0].Tag;
-            var editForm = new SongInfoEditForm(targetSong);
-            editForm.ShowDialog();
+            var editForm = new SongInfoEditForm(targetSong, SongPlayer.currentSong == targetSong ? true : false);
+            var res = editForm.ShowDialog();
             Debug.WriteLine($"Open edit form for {targetSong}");
+            if (res == DialogResult.OK)
+            {
+                reinitSongs(); //reload all songs for now, which isnt efficient
+            }
         }
 
         private void deleteSongEvent(object sender, EventArgs e)
