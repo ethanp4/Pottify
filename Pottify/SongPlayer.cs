@@ -18,7 +18,7 @@ namespace Pottify
 
         static SongPlayer()
         {
-            outputDevice = new WaveOutEvent();
+            outputDevice = new WaveOutEvent(); //this object stays for the life of the application
             //outputDevice.PlaybackStopped += stopSong;
         }
 
@@ -29,19 +29,16 @@ namespace Pottify
                 case PlaybackState.Playing: //if playing then pause
                     outputDevice.Pause();
                     SongControls.instance.setSongInfo(1, currentSong);
-                    SongControls.instance.setStopped();
                     Debug.WriteLine($"Pausing song {currentSong}");
                     break;
                 case PlaybackState.Paused: //if paused then play
                     outputDevice.Play();
                     SongControls.instance.setSongInfo(0, currentSong);
-                    SongControls.instance.setPlaying();
                     Debug.WriteLine($"Resuming song {currentSong}");
                     break;
                 case PlaybackState.Stopped: //if theres nothing then play a random song
                     var song = Song.songsList[new Random().Next(Song.songsList.Count)];
                     playSong(song);
-                    SongControls.instance.setPlaying();
                     Debug.WriteLine("Playing random song");
                     break;
             }
@@ -49,14 +46,22 @@ namespace Pottify
 
         public static void playSong(Song s) //when a song object is passed, ignore the current state and play that one
         {
+            stop();
             var file = s.filePath;
-            outputDevice.Stop();
             currentSong = s;
             audioFile = new AudioFileReader(file);
             outputDevice.Init(audioFile);
             outputDevice.Play();
             SongControls.instance.setSongInfo(0, currentSong); //set ui to playing
-            SongControls.instance.setPlaying();
+        }
+
+        public static void stop()
+        {
+            outputDevice.Stop();
+            if (audioFile != null) { 
+               audioFile.Dispose();
+            }
+            SongControls.instance.setSongInfo(2, null);
         }
 
         //public static void pauseSong()

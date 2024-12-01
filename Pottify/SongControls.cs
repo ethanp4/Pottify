@@ -20,36 +20,32 @@ namespace Pottify
             instance = this;
         }
 
-        public bool playing = false;
-
-
-        public void setPlaying() //set controls state
-        {
-            playing = true;
-            btnPlay.Text = "Pause";
-        }
-
-        public void setStopped()//set controls state
-        {
-            playing = false;
-            btnPlay.Text = "Play";
-        }
+        enum MODE { NORMAL, REPEAT_SONG, SHUFFLE }
+        private MODE mode = MODE.NORMAL;
 
         private void btnPlay_Click(object sender, EventArgs e) //when the song is paused or resumed from the control
         {
-            SongPlayer.playSong(); //pause play / play random song
+            SongPlayer.playSong(); //pause play / play random song -> setSongInfo()
         }
 
-        public void setSongInfo(int status, Song song) {
-            string info = "No song is playing";
+        public void setSongInfo(int status, Song song) //called by SongPlayer
+        {
+            string info = "";
             switch (status)
             {
                 case 0: //playing a song
                     info = $"Playing {song}";
+                    btnPlay.Text = "Pause";
                     break;
                 case 1: //paused a song
                     info = $"Paused {song}";
+                    btnPlay.Text = "Play";
                     break;
+                default:
+                    info = "No song is playing. Double click a song or press play to play a random song";
+                    btnPlay.Text = "Play";
+                    break;
+
             }
             labelInfo.AutoSize = false;
             labelInfo.Text = info;
@@ -60,6 +56,21 @@ namespace Pottify
         }
 
         private void btnNext_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            SongPlayer.stop();
+        }
+
+        private void buttonLoop_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnShuffle_Click(object sender, EventArgs e)
         {
 
         }
