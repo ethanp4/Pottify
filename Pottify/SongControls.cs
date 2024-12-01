@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -58,16 +59,35 @@ namespace Pottify
 
         private void changePlayMode(object sender, EventArgs e)
         {
-            if (mode != MODE.SHUFFLE)
+            switch(((Button)sender).Text)
             {
-                mode = MODE.SHUFFLE;
-                btnShuffle.BackColor = Color.RebeccaPurple;
+                case "Shuffle":
+                    if (mode != MODE.SHUFFLE)
+                    {
+                        mode = MODE.SHUFFLE;
+                        buttonLoop.BackColor = DefaultBackColor;
+                        btnShuffle.BackColor = Color.MediumSeaGreen;
+                    }
+                    else if (mode == MODE.SHUFFLE)
+                    {
+                        mode = MODE.NORMAL;
+                        btnShuffle.BackColor = DefaultBackColor;
+                    }
+                    break;
+                case "Loop":
+                    if (mode != MODE.REPEAT_SONG)
+                    {
+                        mode = MODE.REPEAT_SONG;
+                        buttonLoop.BackColor = Color.MediumSeaGreen;
+                        btnShuffle.BackColor = DefaultBackColor;
+                    } else if (mode == MODE.REPEAT_SONG)
+                    {
+                        mode = MODE.NORMAL;
+                        buttonLoop.BackColor = DefaultBackColor;
+                    }
+                    break;
             }
-            else
-            {
-                mode = MODE.NORMAL;
-                btnShuffle.BackColor = DefaultBackColor;
-            }
+            Debug.WriteLine($"Mode is set to {mode}");
         }
 
         private void btnPrevious_Click(object sender, EventArgs e)

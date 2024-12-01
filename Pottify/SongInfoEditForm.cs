@@ -62,6 +62,7 @@ namespace Pottify
                 MessageBox.Show($"Failed to save song: {ex.Message}");
                 //DialogResult = DialogResult.Cancel;
             }
+            Form1.instance.reinitSongs();
         }
     }
 }

@@ -10,12 +10,14 @@ namespace Pottify {
         private List<string> artistList = new(); // Stores the list of unique artists
         enum VIEWTYPE { SONG, ARTIST, PLAYLIST, ALBUM }
         private VIEWTYPE viewType = VIEWTYPE.SONG;
+        public static Form1 instance { get; private set; }
 
         public Form1()
         {
             InitializeComponent();
             //https://github.com/mono/taglib-sharp
 
+            instance = this;
             oneTimeInitStuff();
             reinitSongs();
         }
@@ -32,10 +34,10 @@ namespace Pottify {
         }
 
         ////////////////////Create initial view//////////////////////////////
-        private void reinitSongs() //this function is rerun if stuff is edited
+        public void reinitSongs() //this function is rerun if stuff is edited
         {
             var songsPath = "..\\..\\..\\Songs";
-            // songsPath = @"C:\Users\Ethan\Music\";
+             //songsPath = @"C:\Users\Ethan\Music\";
             //load songs and set listview columns
             Song.initSongList(songsPath);
             LoadArtists(); // load artists into the artistList
@@ -142,12 +144,12 @@ namespace Pottify {
         {
             var targetSong = (Song)songsListView.SelectedItems[0].Tag;
             var editForm = new SongInfoEditForm(targetSong, SongPlayer.currentSong == targetSong ? true : false);
-            var res = editForm.ShowDialog();
+            editForm.Show();
             Debug.WriteLine($"Open edit form for {targetSong}");
-            if (res == DialogResult.OK)
-            {
-                reinitSongs(); //reload all songs for now, which isnt efficient
-            }
+            //if (res == DialogResult.OK)
+            //{
+            //    reinitSongs(); //reload all songs for now, which isnt efficient
+            //}
         }
 
         private void deleteSongEvent(object sender, EventArgs e)
@@ -213,6 +215,7 @@ namespace Pottify {
             {
                 case VIEWTYPE.SONG:
                     Song selectedSong = (Song)songsListView.SelectedItems[0].Tag;
+                    SongPlayer.ignoreNextSongFinishEvent = true;
                     SongPlayer.playSong(selectedSong);
                     Debug.WriteLine($"Play song {selectedSong}");
                     break;
