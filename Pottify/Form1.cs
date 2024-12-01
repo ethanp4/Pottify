@@ -8,6 +8,7 @@ namespace Pottify {
     {
         private List<ListViewItem> fullList = new();
         private List<string> artistList = new(); // Stores the list of unique artists
+        private List<string> albumList = new();
         enum VIEWTYPE { ALL, ARTIST, PLAYLIST, ALBUM }
         private VIEWTYPE viewType = VIEWTYPE.ALL;
 
@@ -67,7 +68,62 @@ namespace Pottify {
             textSearch.AutoCompleteCustomSource = songs;
 
             LoadArtists(); // load artists into the artistList
+            LoadAlbums();
         }
+
+        ///////////////////////////////////////////ALBUMS VIEW////////////////////////////////////
+        private void LoadAlbums()
+        {
+            albumList = Song.songsList
+                .Select(s => s.album)
+                .Distinct()
+                .OrderBy(a => a)
+                .ToList();
+        }
+
+        private void ShowAlbums()
+        {
+            songsListView.Items.Clear();
+            songsListView.Columns.Clear();
+            songsListView.Columns.Add("Album", 300);
+
+            foreach (var album in albumList)
+            {
+                var listItem = new ListViewItem();
+                listItem.Text = album;
+                listItem.Tag = album;
+                listItem.ImageKey = Song.songsList.Where(s => s.album == album).ToList()[0].id.ToString();
+                songsListView.Items.Add(listItem);
+            }
+        }
+
+        //show songs by a specific album
+        private void ShowSongsByAlbum(string album)
+        {
+            songsListView.Items.Clear();
+            songsListView.Columns.Clear();
+            songsListView.Columns.Add("Title", 200);
+            songsListView.Columns.Add("Artist", 200);
+            songsListView.Columns.Add("Album", 200);
+            songsListView.Columns.Add("Track", 70);
+            songsListView.Columns.Add("Year", 100);
+
+            // filters songs by the selected album
+            var songsByAlbum = Song.songsList.Where(s => s.album == album).ToList();
+
+            foreach (var s in songsByAlbum)
+            {
+                var listItem = new ListViewItem();
+                listItem.Text = s.title;
+                listItem.SubItems.Add(s.artist[0]); // Assuming the first artist is displayed
+                listItem.SubItems.Add(s.album);
+                listItem.SubItems.Add($"{s.trackNumber} of {s.trackCount}");
+                listItem.SubItems.Add(s.year == 0 ? "Not set" : s.year.ToString());
+                listItem.Tag = s; // Store song object in Tag
+                songsListView.Items.Add(listItem);
+            }
+        }
+
         ///////////////////////////////////////////ARTISTS VIEW////////////////////////////////////
         private void LoadArtists()
         {
@@ -83,12 +139,14 @@ namespace Pottify {
             songsListView.Items.Clear();
             songsListView.Columns.Clear();
             songsListView.Columns.Add("Artist", 300);
-
+            
             foreach (var artist in artistList)
             {
                 var listItem = new ListViewItem();
                 listItem.Text = artist;
                 listItem.Tag = artist;
+                var songsByArtist = Song.songsList.Where(s => s.artist.Contains(artist)).ToList()[0].id;
+                listItem.ImageKey = Song.songsList.Where(s => s.artist.Contains(artist)).ToList()[0].id.ToString();
                 songsListView.Items.Add(listItem);
             }
 
@@ -117,6 +175,7 @@ namespace Pottify {
                 listItem.SubItems.Add($"{s.trackNumber} of {s.trackCount}");
                 listItem.SubItems.Add(s.year == 0 ? "Not set" : s.year.ToString());
                 listItem.Tag = s; // Store song object in Tag
+                listItem.ImageKey = Song.songsList.Where(s => s.artist.Contains(artist)).ToList()[0].id.ToString();
                 songsListView.Items.Add(listItem);
             }
         }
@@ -181,11 +240,18 @@ namespace Pottify {
                             songContextMenu.Show(Cursor.Position);
                             break;
                         case VIEWTYPE.ARTIST:
+                            var selectedArtist = songsListView.SelectedItems[0].Tag.ToString();
+                            Debug.WriteLine("artist was double clicked: " + selectedArtist);
+                            ShowSongsByArtist(selectedArtist);
                             break;
                         case VIEWTYPE.PLAYLIST:
                             break;
                         case VIEWTYPE.ALBUM:
+                            var selectedAlbum = songsListView.SelectedItems[0].Tag.ToString();
+                            Debug.WriteLine("album was double clicked: " + selectedAlbum);
+                            ShowSongsByAlbum(selectedAlbum);
                             break;
+                            
                     }
                 {
                 }
@@ -202,13 +268,32 @@ namespace Pottify {
                     Debug.WriteLine($"Play song {selectedSong}");
                     break;
                 case VIEWTYPE.ARTIST:
-                    var selectedArtist = songsListView.SelectedItems[0].Tag.ToString();
-                    Debug.WriteLine("artist was double clicked: " + selectedArtist);
-                    ShowSongsByArtist(selectedArtist);
+                    if (songsListView.Columns[0].Text == "Artist")
+                    {
+                        var selectedArtist = songsListView.SelectedItems[0].Tag.ToString();
+                        Debug.WriteLine("Artist was double-clicked: " + selectedArtist);
+                        ShowSongsByArtist(selectedArtist);
+                    }
+                    else
+                    {
+                        Song selectedSongArtist = (Song)songsListView.SelectedItems[0].Tag;
+                        Debug.WriteLine($"Play song {selectedSongArtist}");
+                    }
                     break;
                 case VIEWTYPE.PLAYLIST:
                     break;
                 case VIEWTYPE.ALBUM:
+                    if (songsListView.Columns[0].Text == "Album")
+                    {
+                        var selectedAlbum = songsListView.SelectedItems[0].Tag.ToString();
+                        Debug.WriteLine("Album was double-clicked: " + selectedAlbum);
+                        ShowSongsByAlbum(selectedAlbum);
+                    }
+                    else
+                    {
+                        Song selectedSongAlbum = (Song)songsListView.SelectedItems[0].Tag;
+                        Debug.WriteLine($"Play song {selectedSongAlbum}");
+                    }
                     break;
             }
 
@@ -279,7 +364,14 @@ namespace Pottify {
             if (res == DialogResult.OK)
             {
                 new Playlist(createForm.name, createForm.description);
-            } 
+            }
+        }
+
+        private void btnAlbum_Click(object sender, EventArgs e)
+        {
+            if (viewType == VIEWTYPE.ALBUM) { return; } 
+            viewType = VIEWTYPE.ALBUM; 
+            ShowAlbums();
         }
     }
 }
