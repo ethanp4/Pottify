@@ -38,6 +38,7 @@ namespace Pottify {
             groupBox2 = new GroupBox();
             groupBox3 = new GroupBox();
             groupBox4 = new GroupBox();
+            btnRefresh = new Button();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -183,13 +184,24 @@ namespace Pottify {
             // 
             // groupBox4
             // 
+            groupBox4.Controls.Add(btnRefresh);
             groupBox4.Controls.Add(btnCreatePlaylist);
             groupBox4.Location = new Point(5, 274);
             groupBox4.Name = "groupBox4";
-            groupBox4.Size = new Size(241, 55);
+            groupBox4.Size = new Size(241, 81);
             groupBox4.TabIndex = 16;
             groupBox4.TabStop = false;
             groupBox4.Text = "Other";
+            // 
+            // btnRefresh
+            // 
+            btnRefresh.Location = new Point(7, 48);
+            btnRefresh.Name = "btnRefresh";
+            btnRefresh.Size = new Size(226, 23);
+            btnRefresh.TabIndex = 17;
+            btnRefresh.Text = "Refresh list";
+            btnRefresh.UseVisualStyleBackColor = true;
+            btnRefresh.Click += btnRefresh_Click;
             // 
             // Form1
             // 
@@ -230,5 +242,6 @@ namespace Pottify {
         private GroupBox groupBox2;
         private GroupBox groupBox3;
         private GroupBox groupBox4;
+        private Button btnRefresh;
     }
 }
