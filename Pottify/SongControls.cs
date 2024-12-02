@@ -1,14 +1,4 @@
-﻿using NAudio.Utils;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Diagnostics;
 using Timer = System.Windows.Forms.Timer;
 
 namespace Pottify
@@ -21,8 +11,8 @@ namespace Pottify
         {
             InitializeComponent();
             timer = new();
-            timer.Tick += setProgress;
-            timer.Interval = 10;
+            timer.Tick += setProgress; //constantly read progress from SongPlayer
+            timer.Interval = 100;
             timer.Start();
             instance = this;
         }
@@ -32,7 +22,7 @@ namespace Pottify
 
         private void btnPlay_Click(object sender, EventArgs e) //when the song is paused or resumed from the control
         {
-            SongPlayer.playSong(); //pause play / play random song -> setSongInfo()
+            SongPlayer.playSong(); //pause / play / play random song -> setSongInfo()
         }
 
         public void setSongInfo(int status, Song song) //called by SongPlayer

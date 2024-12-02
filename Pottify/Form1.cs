@@ -1,10 +1,8 @@
-using System.Diagnostics;
-using System.Reflection;
-using System.IO;
-using System.Windows.Forms;
 using NAudio.Wave;
+using System.Diagnostics;
 
-namespace Pottify {
+namespace Pottify
+{
     public partial class Form1 : Form
     {
         private List<ListViewItem> fullList = new();
@@ -20,7 +18,7 @@ namespace Pottify {
 
             instance = this;
             oneTimeInitStuff();
-            reinitSongs();
+            reinitSongs(true, null);
             Playlist.LoadPlaylists();
             ResizeEnd += onResize;
         }
@@ -48,14 +46,20 @@ namespace Pottify {
         }
 
         ////////////////////Create initial view//////////////////////////////
-        public void reinitSongs() //this function is rerun if stuff is edited
+        public void reinitSongs(bool loadAllSongs, Song songToReload = null) //this function is rerun if stuff is edited
         {
             var songsPath = "..\\..\\..\\Songs";
             //songsPath = @"C:\Users\Ethan\Music\";
             //load songs and set listview columns
-            Song.initSongList(songsPath);
-            LoadArtists(); // load artists into the artistList
-            //changeView(viewMode.ALL);
+            if (loadAllSongs)
+            {
+                Song.initSongList(songsPath);
+                LoadArtists();
+                LoadAlbums();
+            } else if (songToReload != null)
+            {
+                Song.reloadIndividualSong(songToReload); //performance
+            }
 
             songsListView.Columns.Clear();
             songsListView.Items.Clear();
@@ -65,7 +69,7 @@ namespace Pottify {
             songsListView.Columns.Add("Album", 200);
             songsListView.Columns.Add("Track", 70);
             songsListView.Columns.Add("Year", 100);
-            foreach (var s in Song.songsList) //add songs to the list
+            foreach (var s in Song.songsList) //add songs to the list view
             {
                 songsListView.Items.Add(createSongListViewItem(s));
             }
@@ -73,18 +77,6 @@ namespace Pottify {
             {
                 fullList.Add((ListViewItem)i);
             }
-
-            var songs = new AutoCompleteStringCollection(); //set autocomplete source
-            foreach (var title in Song.songsList.Select(s => s.title))
-            {
-                songs.Add(title);
-            }
-            textSearch.AutoCompleteMode = AutoCompleteMode.Suggest;
-            textSearch.AutoCompleteSource = AutoCompleteSource.CustomSource;
-            textSearch.AutoCompleteCustomSource = songs;
-
-            LoadArtists(); // load artists into the artistList
-            LoadAlbums();
         }
 
         ///////////////////////////////////////////ALBUMS VIEW////////////////////////////////////
@@ -292,10 +284,6 @@ namespace Pottify {
             var editForm = new SongInfoEditForm(targetSong, SongPlayer.currentSong == targetSong ? true : false);
             editForm.Show();
             Debug.WriteLine($"Open edit form for {targetSong}");
-            //if (res == DialogResult.OK)
-            //{
-            //    reinitSongs(); //reload all songs for now, which isnt efficient
-            //}
         }
 
         private void deleteSongEvent(object sender, EventArgs e)
@@ -314,35 +302,7 @@ namespace Pottify {
                     switch (viewType)
                     {
                         case VIEWTYPE.SONG:
-                            var songContextMenu = new ContextMenuStrip();
-                            //parent items
-                            var playlistsParent = new ToolStripMenuItem("Add to playlist");
-                            var editSong = new ToolStripMenuItem("Edit song");
-                            editSong.Click += editSongEvent;
-                            var deleteSong = new ToolStripMenuItem("Delete song");
-                            deleteSong.Click += deleteSongEvent;
-
-                            //child items (playlists)
-                            foreach (var p in Playlist.getAllPlaylists())
-                            {
-                                var playlist = new ToolStripMenuItem(p.name);
-                                playlist.Tag = p;
-                                playlist.Click += addToPlaylistEvent;
-                                playlistsParent.DropDownItems.Add(playlist);
-                            }
-
-                            if (Playlist.getAllPlaylists().Count == 0)
-                            {
-                                var placeholder = new ToolStripMenuItem("No playlists have been added");
-                                playlistsParent.DropDownItems.Add(placeholder);
-                            }
-
-                            //add the items to the context menu
-                            songContextMenu.Items.Add(playlistsParent);
-                            songContextMenu.Items.Add(editSong);
-                            songContextMenu.Items.Add(deleteSong);
-
-                            songContextMenu.Show(Cursor.Position);
+                            showSongContextMenu(focusedItem);
                             break;
                         case VIEWTYPE.ARTIST:
                             break;
@@ -356,6 +316,39 @@ namespace Pottify {
                 {
                 }
             }
+        }
+
+        private void showSongContextMenu(ListViewItem focusedItem)
+        {
+            var songContextMenu = new ContextMenuStrip();
+            //parent items
+            var playlistsParent = new ToolStripMenuItem("Add to playlist");
+            var editSong = new ToolStripMenuItem("Edit song");
+            editSong.Click += editSongEvent;
+            var deleteSong = new ToolStripMenuItem("Delete song");
+            deleteSong.Click += deleteSongEvent;
+
+            //child items (playlists)
+            foreach (var p in Playlist.getAllPlaylists())
+            {
+                var playlist = new ToolStripMenuItem(p.name);
+                playlist.Tag = p;
+                playlist.Click += addToPlaylistEvent;
+                playlistsParent.DropDownItems.Add(playlist);
+            }
+
+            if (Playlist.getAllPlaylists().Count == 0)
+            {
+                var placeholder = new ToolStripMenuItem("No playlists have been added");
+                playlistsParent.DropDownItems.Add(placeholder);
+            }
+
+            //add the items to the context menu
+            songContextMenu.Items.Add(playlistsParent);
+            songContextMenu.Items.Add(editSong);
+            songContextMenu.Items.Add(deleteSong);
+
+            songContextMenu.Show(Cursor.Position);
         }
 
         private void ShowPlaylistContextMenu(ListViewItem focusedItem)
@@ -383,8 +376,6 @@ namespace Pottify {
                 Debug.WriteLine($"Deleted playlist: {playlist.name}");
             }
         }
-
-
 
         private void itemDoubleClick(object sender, EventArgs e)
         {
@@ -419,10 +410,9 @@ namespace Pottify {
 
         }
 
-        //searching for now
         private void searchChanged(object sender, EventArgs e)
         {
-            // var query = sender.Text.ToLower();
+            viewType = VIEWTYPE.SONG;
             var query = textSearch.Text.ToLower();
             if (query == "")
             {
@@ -430,10 +420,8 @@ namespace Pottify {
                 songsListView.Items.AddRange(fullList.ToArray());
                 return;
             }
-            // var items = songsListView.Items;
-            var items = fullList;
             var res = new List<ListViewItem>();
-            foreach (ListViewItem item in items)
+            foreach (ListViewItem item in fullList)
             {
                 if (item.Text.ToLower().Contains(query))
                 {
@@ -457,7 +445,7 @@ namespace Pottify {
         private void btnAll_Click(object sender, EventArgs e) //change view contents
         {
             //if (viewType == VIEWTYPE.SONG) { return; } //do nothing if its already this
-            reinitSongs();
+            reinitSongs(false, null);
             viewType = VIEWTYPE.SONG;
             songsListView.Items.Clear();
             songsListView.Items.AddRange(fullList.ToArray()); // Restore full song list
@@ -467,7 +455,6 @@ namespace Pottify {
             songsListView.Columns.Add("Album", 200);
             songsListView.Columns.Add("Track", 70);
             songsListView.Columns.Add("Year", 100);
-
         }
 
         private void PlaySelectedSong(Song song)
@@ -476,7 +463,7 @@ namespace Pottify {
             {
                 SongPlayer.skipSongFinishedEvent = true;
             }
-            SongPlayer.playSong(song); 
+            SongPlayer.playSong(song);
             Debug.WriteLine($"Playing song: {song.title}");
         }
 
