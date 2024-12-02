@@ -43,16 +43,17 @@ namespace Pottify
             {
                 case 0: //playing a song
                     info = $"Playing {song}";
-                    length = "Song length: " + song.length.TotalSeconds.ToString();
+                    length = $"Song Length: {song.length.TotalSeconds.ToString("F1")} / {song.length.ToString(@"mm\:ss")}";
                     btnPlay.Text = "Pause";
                     break;
                 case 1: //paused a song
                     info = $"Paused {song}";
-                    length = "Song length: " + song.length.TotalSeconds.ToString();
+                    length = $"Song Length: {song.length.TotalSeconds.ToString("F1")} / {song.length.ToString(@"mm\:ss")}";
                     btnPlay.Text = "Play";
                     break;
                 default:
                     info = "No song is playing. Double click a song or press play to play a random song";
+                    length = "I dont know!";
                     btnPlay.Text = "Play";
                     break;
 
@@ -131,7 +132,7 @@ namespace Pottify
 
         public void setProgress(object sender, EventArgs e)
         {
-            numProgress.Value = SongPlayer.getProgress();
+            numProgress.Value = Convert.ToDecimal(SongPlayer.getProgress());
         }
 
         private void songProgressKeyDown(object sender, KeyEventArgs e)

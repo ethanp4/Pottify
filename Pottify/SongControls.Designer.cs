@@ -43,7 +43,7 @@
             // 
             // btnPrevious
             // 
-            btnPrevious.Location = new Point(3, 126);
+            btnPrevious.Location = new Point(0, 119);
             btnPrevious.Name = "btnPrevious";
             btnPrevious.Size = new Size(75, 23);
             btnPrevious.TabIndex = 0;
@@ -53,7 +53,7 @@
             // 
             // btnPlay
             // 
-            btnPlay.Location = new Point(84, 126);
+            btnPlay.Location = new Point(81, 119);
             btnPlay.Name = "btnPlay";
             btnPlay.Size = new Size(71, 23);
             btnPlay.TabIndex = 1;
@@ -63,7 +63,7 @@
             // 
             // btnNext
             // 
-            btnNext.Location = new Point(158, 126);
+            btnNext.Location = new Point(155, 119);
             btnNext.Name = "btnNext";
             btnNext.Size = new Size(76, 23);
             btnNext.TabIndex = 2;
@@ -75,7 +75,7 @@
             // 
             labelInfo.Anchor = AnchorStyles.None;
             labelInfo.AutoSize = true;
-            labelInfo.Location = new Point(3, 53);
+            labelInfo.Location = new Point(0, 46);
             labelInfo.MaximumSize = new Size(170, 0);
             labelInfo.MinimumSize = new Size(228, 70);
             labelInfo.Name = "labelInfo";
@@ -86,7 +86,7 @@
             // 
             // btnStop
             // 
-            btnStop.Location = new Point(84, 155);
+            btnStop.Location = new Point(81, 148);
             btnStop.Name = "btnStop";
             btnStop.Size = new Size(71, 23);
             btnStop.TabIndex = 4;
@@ -96,7 +96,7 @@
             // 
             // btnShuffle
             // 
-            btnShuffle.Location = new Point(158, 155);
+            btnShuffle.Location = new Point(155, 148);
             btnShuffle.Name = "btnShuffle";
             btnShuffle.Size = new Size(76, 23);
             btnShuffle.TabIndex = 5;
@@ -106,7 +106,7 @@
             // 
             // buttonLoop
             // 
-            buttonLoop.Location = new Point(3, 155);
+            buttonLoop.Location = new Point(0, 148);
             buttonLoop.Name = "buttonLoop";
             buttonLoop.Size = new Size(75, 23);
             buttonLoop.TabIndex = 6;
@@ -117,17 +117,16 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(3, 7);
+            label1.Location = new Point(3, 2);
             label1.Name = "label1";
             label1.Size = new Size(85, 15);
             label1.TabIndex = 7;
-            label1.Text = "Song progress:";
+            label1.Text = "Song Progress:";
             // 
             // numProgress
             // 
             numProgress.DecimalPlaces = 1;
-            numProgress.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
-            numProgress.Location = new Point(94, 5);
+            numProgress.Location = new Point(86, 0);
             numProgress.Maximum = new decimal(new int[] { 100000, 0, 0, 0 });
             numProgress.Name = "numProgress";
             numProgress.Size = new Size(58, 23);
@@ -139,11 +138,11 @@
             // labelLength
             // 
             labelLength.AutoSize = true;
-            labelLength.Location = new Point(11, 38);
+            labelLength.Location = new Point(3, 26);
             labelLength.Name = "labelLength";
-            labelLength.Size = new Size(77, 15);
+            labelLength.Size = new Size(146, 15);
             labelLength.TabIndex = 10;
-            labelLength.Text = "Song Length:";
+            labelLength.Text = "Song Length: I dont know!";
             // 
             // SongControls
             // 
@@ -160,7 +159,7 @@
             Controls.Add(btnPlay);
             Controls.Add(btnPrevious);
             Name = "SongControls";
-            Size = new Size(234, 180);
+            Size = new Size(233, 172);
             ((System.ComponentModel.ISupportInitialize)numProgress).EndInit();
             ResumeLayout(false);
             PerformLayout();
