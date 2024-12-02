@@ -60,7 +60,7 @@ namespace Pottify {
             textSearch.Location = new Point(12, 12);
             textSearch.Name = "textSearch";
             textSearch.PlaceholderText = "Search for a song";
-            textSearch.Size = new Size(214, 23);
+            textSearch.Size = new Size(226, 23);
             textSearch.TabIndex = 3;
             textSearch.TextChanged += searchChanged;
             // 
