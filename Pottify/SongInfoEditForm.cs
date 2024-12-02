@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace Pottify
+﻿namespace Pottify
 {
     public partial class SongInfoEditForm : Form
     {
@@ -19,7 +9,7 @@ namespace Pottify
             song = s;
             Text = $"Information for {s}";
             textTitle.Text = s.title;
-            textArtist.Text = s.artist; 
+            textArtist.Text = s.artist;
             textGenre.Text = s.genre;
             textAlbum.Text = s.album;
             textCopyright.Text = s.copyright;
@@ -30,7 +20,8 @@ namespace Pottify
             numTrackNumber.Value = s.trackNumber;
             numTrackCount.Value = s.trackCount;
             numYear.Value = s.year;
-            if (disabled) {
+            if (disabled)
+            {
                 btnSave.Enabled = false;
                 btnSave.Text = "Stop the song to save";
             }
@@ -58,11 +49,11 @@ namespace Pottify
                 MessageBox.Show("Successfully saved song");
                 DialogResult = DialogResult.OK;
             }
-            catch (Exception ex) {
-                MessageBox.Show($"Failed to save song: {ex.Message}");
-                //DialogResult = DialogResult.Cancel;
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to save song: {ex.Message}"); //usually due to the file being used by another process (its being played)
             }
-            Form1.instance.reinitSongs();
+            Form1.instance.reinitSongs(false, song);
         }
     }
 }
