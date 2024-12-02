@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+
 namespace Pottify {
     internal static class Program {
         /// <summary>
@@ -8,7 +10,11 @@ namespace Pottify {
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new Form1());
+            var loadingForm = new LoadingForm();
+            var mainForm = new Form1();
+            mainForm.Load += (object sender, EventArgs e) => { loadingForm.Dispose(); };
+            loadingForm.Show();
+            Application.Run(mainForm);
         }
     }
 }
