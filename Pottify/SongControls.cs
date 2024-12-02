@@ -9,15 +9,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Timer = System.Windows.Forms.Timer;
 
 namespace Pottify
 {
     public partial class SongControls : UserControl
     {
         public static SongControls instance;
+        private static Timer timer;
         public SongControls()
         {
             InitializeComponent();
+            timer = new();
+            timer.Tick += setProgress;
+            timer.Interval = 10;
+            timer.Start();
             instance = this;
         }
 
@@ -32,14 +38,17 @@ namespace Pottify
         public void setSongInfo(int status, Song song) //called by SongPlayer
         {
             string info = "";
+            string length = "";
             switch (status)
             {
                 case 0: //playing a song
                     info = $"Playing {song}";
+                    length = "Song length: " + song.length.TotalSeconds.ToString();
                     btnPlay.Text = "Pause";
                     break;
                 case 1: //paused a song
                     info = $"Paused {song}";
+                    length = "Song length: " + song.length.TotalSeconds.ToString();
                     btnPlay.Text = "Play";
                     break;
                 default:
@@ -50,17 +59,18 @@ namespace Pottify
             }
             labelInfo.AutoSize = false;
             labelInfo.Text = info;
+            labelLength.Text = length;
         }
 
         private void btnStop_Click(object sender, EventArgs e)
         {
-            SongPlayer.ignoreNextSongFinishEvent = true;
+            SongPlayer.skipSongFinishedEvent = true;
             SongPlayer.stop();
         }
 
         private void changePlayMode(object sender, EventArgs e)
         {
-            switch(((Button)sender).Text)
+            switch (((Button)sender).Text)
             {
                 case "Shuffle":
                     if (mode != MODE.SHUFFLE)
@@ -81,7 +91,8 @@ namespace Pottify
                         mode = MODE.REPEAT_SONG;
                         buttonLoop.BackColor = Color.MediumSeaGreen;
                         btnShuffle.BackColor = DefaultBackColor;
-                    } else if (mode == MODE.REPEAT_SONG)
+                    }
+                    else if (mode == MODE.REPEAT_SONG)
                     {
                         mode = MODE.NORMAL;
                         buttonLoop.BackColor = DefaultBackColor;
@@ -93,12 +104,44 @@ namespace Pottify
 
         private void btnPrevious_Click(object sender, EventArgs e)
         {
-
+            SongPlayer.skipSongFinishedEvent = true;
+            SongPlayer.previousSong();
         }
 
         private void btnNext_Click(object sender, EventArgs e)
         {
+            //SongPlayer.intentionalSongChange = true;
+            SongPlayer.nextSong();
+        }
 
+        private void songProgressFocus(object sender, EventArgs e)
+        {
+            switch (((NumericUpDown)sender).Focused)
+            {
+                case true:
+                    Debug.WriteLine("Progress enter focus");
+                    timer.Stop();
+                    break;
+                case false:
+                    Debug.WriteLine("Progress exit focus");
+                    timer.Start();
+                    break;
+            }
+        }
+
+        public void setProgress(object sender, EventArgs e)
+        {
+            numProgress.Value = SongPlayer.getProgress();
+        }
+
+        private void songProgressKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                SongPlayer.setPosition((long)numProgress.Value);
+                this.ActiveControl = null;
+                timer.Start();
+            }
         }
     }
 }
