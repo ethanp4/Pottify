@@ -46,9 +46,11 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(317, 157);
             Controls.Add(label1);
+            MaximumSize = new Size(333, 196);
+            MinimumSize = new Size(333, 196);
             Name = "LoadingForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "LoadingForm";
+            Text = "Currently loading...";
             ResumeLayout(false);
             PerformLayout();
         }

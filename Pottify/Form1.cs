@@ -22,6 +22,12 @@ namespace Pottify {
             oneTimeInitStuff();
             reinitSongs();
             Playlist.LoadPlaylists();
+            ResizeEnd += onResize;
+        }
+
+        private void onResize(object? sender, EventArgs e)
+        {
+            Debug.WriteLine($"This form is now {Size.ToString()} big");
         }
         protected override void OnFormClosing(FormClosingEventArgs e)
         {

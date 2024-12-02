@@ -46,7 +46,7 @@
             btnPrevious.Location = new Point(0, 119);
             btnPrevious.Name = "btnPrevious";
             btnPrevious.Size = new Size(75, 23);
-            btnPrevious.TabIndex = 0;
+            btnPrevious.TabIndex = 1;
             btnPrevious.Text = "Previous";
             btnPrevious.UseVisualStyleBackColor = true;
             btnPrevious.Click += btnPrevious_Click;
@@ -56,7 +56,7 @@
             btnPlay.Location = new Point(81, 119);
             btnPlay.Name = "btnPlay";
             btnPlay.Size = new Size(71, 23);
-            btnPlay.TabIndex = 1;
+            btnPlay.TabIndex = 2;
             btnPlay.Text = "Play";
             btnPlay.UseVisualStyleBackColor = true;
             btnPlay.Click += btnPlay_Click;
@@ -66,7 +66,7 @@
             btnNext.Location = new Point(155, 119);
             btnNext.Name = "btnNext";
             btnNext.Size = new Size(76, 23);
-            btnNext.TabIndex = 2;
+            btnNext.TabIndex = 3;
             btnNext.Text = "Next";
             btnNext.UseVisualStyleBackColor = true;
             btnNext.Click += btnNext_Click;
@@ -89,7 +89,7 @@
             btnStop.Location = new Point(81, 148);
             btnStop.Name = "btnStop";
             btnStop.Size = new Size(71, 23);
-            btnStop.TabIndex = 4;
+            btnStop.TabIndex = 5;
             btnStop.Text = "Stop";
             btnStop.UseVisualStyleBackColor = true;
             btnStop.Click += btnStop_Click;
@@ -99,7 +99,7 @@
             btnShuffle.Location = new Point(155, 148);
             btnShuffle.Name = "btnShuffle";
             btnShuffle.Size = new Size(76, 23);
-            btnShuffle.TabIndex = 5;
+            btnShuffle.TabIndex = 6;
             btnShuffle.Text = "Shuffle";
             btnShuffle.UseVisualStyleBackColor = true;
             btnShuffle.Click += changePlayMode;
@@ -109,7 +109,7 @@
             buttonLoop.Location = new Point(0, 148);
             buttonLoop.Name = "buttonLoop";
             buttonLoop.Size = new Size(75, 23);
-            buttonLoop.TabIndex = 6;
+            buttonLoop.TabIndex = 4;
             buttonLoop.Text = "Loop";
             buttonLoop.UseVisualStyleBackColor = true;
             buttonLoop.Click += changePlayMode;
@@ -130,7 +130,7 @@
             numProgress.Maximum = new decimal(new int[] { 100000, 0, 0, 0 });
             numProgress.Name = "numProgress";
             numProgress.Size = new Size(58, 23);
-            numProgress.TabIndex = 9;
+            numProgress.TabIndex = 0;
             numProgress.Enter += songProgressFocus;
             numProgress.KeyDown += songProgressKeyDown;
             numProgress.Leave += songProgressFocus;
