@@ -7,11 +7,10 @@ Pottify is a music player and library manager written in c# winforms. It automat
     - Albums
     - Artists
     - Playlists
-
 - 2 Display modes
     - Images view
     - Details view
-
+- Editing song files' metadata
 - Creating and adding songs to playlists
 - A wealth of media controls
 - Seeking via timestamp
