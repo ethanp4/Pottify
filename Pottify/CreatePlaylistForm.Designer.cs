@@ -36,23 +36,23 @@
             // 
             // textDescription
             // 
-            textDescription.Location = new Point(42, 66);
+            textDescription.Location = new Point(40, 64);
             textDescription.Name = "textDescription";
             textDescription.PlaceholderText = "Playlist Description";
             textDescription.Size = new Size(169, 23);
-            textDescription.TabIndex = 0;
+            textDescription.TabIndex = 1;
             // 
             // textName
             // 
-            textName.Location = new Point(42, 37);
+            textName.Location = new Point(40, 35);
             textName.Name = "textName";
             textName.PlaceholderText = "Playlist Name";
             textName.Size = new Size(169, 23);
-            textName.TabIndex = 1;
+            textName.TabIndex = 0;
             // 
             // btnCreate
             // 
-            btnCreate.Location = new Point(118, 95);
+            btnCreate.Location = new Point(40, 93);
             btnCreate.Name = "btnCreate";
             btnCreate.Size = new Size(93, 23);
             btnCreate.TabIndex = 2;
@@ -62,7 +62,9 @@
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(42, 95);
+            btnCancel.Location = new Point(139, 93);
+            btnCancel.MaximumSize = new Size(70, 23);
+            btnCancel.MinimumSize = new Size(70, 23);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(70, 23);
             btnCancel.TabIndex = 3;
@@ -74,7 +76,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(257, 182);
+            ClientSize = new Size(250, 145);
             Controls.Add(btnCancel);
             Controls.Add(btnCreate);
             Controls.Add(textName);

@@ -59,7 +59,7 @@
             // 
             // textTitle
             // 
-            textTitle.Location = new Point(253, 48);
+            textTitle.Location = new Point(263, 48);
             textTitle.Name = "textTitle";
             textTitle.PlaceholderText = "Title";
             textTitle.Size = new Size(164, 23);
@@ -67,7 +67,7 @@
             // 
             // textArtist
             // 
-            textArtist.Location = new Point(253, 77);
+            textArtist.Location = new Point(263, 77);
             textArtist.Name = "textArtist";
             textArtist.PlaceholderText = "Artist";
             textArtist.Size = new Size(164, 23);
@@ -75,7 +75,7 @@
             // 
             // textGenre
             // 
-            textGenre.Location = new Point(253, 106);
+            textGenre.Location = new Point(263, 106);
             textGenre.Name = "textGenre";
             textGenre.PlaceholderText = "Genre";
             textGenre.Size = new Size(164, 23);
@@ -83,7 +83,7 @@
             // 
             // textAlbum
             // 
-            textAlbum.Location = new Point(253, 135);
+            textAlbum.Location = new Point(263, 135);
             textAlbum.Name = "textAlbum";
             textAlbum.PlaceholderText = "Album";
             textAlbum.Size = new Size(164, 23);
@@ -91,7 +91,7 @@
             // 
             // textCopyright
             // 
-            textCopyright.Location = new Point(253, 164);
+            textCopyright.Location = new Point(263, 164);
             textCopyright.Name = "textCopyright";
             textCopyright.PlaceholderText = "Copyright";
             textCopyright.Size = new Size(164, 23);
@@ -99,7 +99,7 @@
             // 
             // textComments
             // 
-            textComments.Location = new Point(494, 48);
+            textComments.Location = new Point(504, 48);
             textComments.Name = "textComments";
             textComments.PlaceholderText = "Comments";
             textComments.Size = new Size(165, 23);
@@ -108,7 +108,7 @@
             // labelFilePath
             // 
             labelFilePath.AutoSize = true;
-            labelFilePath.Location = new Point(204, 219);
+            labelFilePath.Location = new Point(34, 224);
             labelFilePath.Name = "labelFilePath";
             labelFilePath.Size = new Size(94, 15);
             labelFilePath.TabIndex = 10;
@@ -117,7 +117,7 @@
             // labelID
             // 
             labelID.AutoSize = true;
-            labelID.Location = new Point(204, 234);
+            labelID.Location = new Point(34, 239);
             labelID.Name = "labelID";
             labelID.Size = new Size(53, 15);
             labelID.TabIndex = 11;
@@ -127,50 +127,50 @@
             // 
             songImage.Location = new Point(34, 48);
             songImage.Name = "songImage";
-            songImage.Size = new Size(150, 150);
+            songImage.Size = new Size(164, 168);
             songImage.SizeMode = PictureBoxSizeMode.StretchImage;
             songImage.TabIndex = 12;
             songImage.TabStop = false;
             // 
             // btnSave
             // 
-            btnSave.Location = new Point(204, 193);
+            btnSave.Location = new Point(214, 193);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(164, 23);
-            btnSave.TabIndex = 13;
+            btnSave.TabIndex = 9;
             btnSave.Text = "Save changes to original file";
             btnSave.UseVisualStyleBackColor = true;
             btnSave.Click += btnSave_Click;
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(374, 193);
+            btnCancel.Location = new Point(384, 193);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(75, 23);
-            btnCancel.TabIndex = 14;
+            btnCancel.TabIndex = 10;
             btnCancel.Text = "Close";
             btnCancel.UseVisualStyleBackColor = true;
             btnCancel.Click += btnCancel_Click;
             // 
             // numTrackNumber
             // 
-            numTrackNumber.Location = new Point(494, 106);
+            numTrackNumber.Location = new Point(504, 106);
             numTrackNumber.Name = "numTrackNumber";
             numTrackNumber.Size = new Size(76, 23);
-            numTrackNumber.TabIndex = 15;
+            numTrackNumber.TabIndex = 7;
             // 
             // numTrackCount
             // 
-            numTrackCount.Location = new Point(589, 106);
+            numTrackCount.Location = new Point(599, 106);
             numTrackCount.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
             numTrackCount.Name = "numTrackCount";
             numTrackCount.Size = new Size(70, 23);
-            numTrackCount.TabIndex = 16;
+            numTrackCount.TabIndex = 8;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(573, 110);
+            label1.Location = new Point(583, 110);
             label1.Name = "label1";
             label1.Size = new Size(12, 15);
             label1.TabIndex = 17;
@@ -178,16 +178,16 @@
             // 
             // numYear
             // 
-            numYear.Location = new Point(494, 75);
+            numYear.Location = new Point(504, 75);
             numYear.Maximum = new decimal(new int[] { 3000, 0, 0, 0 });
             numYear.Name = "numYear";
             numYear.Size = new Size(165, 23);
-            numYear.TabIndex = 19;
+            numYear.TabIndex = 6;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(218, 51);
+            label2.Location = new Point(228, 51);
             label2.Name = "label2";
             label2.Size = new Size(29, 15);
             label2.TabIndex = 20;
@@ -196,7 +196,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(212, 80);
+            label3.Location = new Point(222, 82);
             label3.Name = "label3";
             label3.Size = new Size(35, 15);
             label3.TabIndex = 21;
@@ -205,7 +205,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(212, 111);
+            label4.Location = new Point(222, 111);
             label4.Name = "label4";
             label4.Size = new Size(38, 15);
             label4.TabIndex = 22;
@@ -214,7 +214,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(207, 138);
+            label5.Location = new Point(217, 138);
             label5.Name = "label5";
             label5.Size = new Size(43, 15);
             label5.TabIndex = 23;
@@ -223,7 +223,7 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(190, 167);
+            label6.Location = new Point(200, 167);
             label6.Name = "label6";
             label6.Size = new Size(60, 15);
             label6.TabIndex = 24;
@@ -232,7 +232,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(422, 51);
+            label7.Location = new Point(432, 51);
             label7.Name = "label7";
             label7.Size = new Size(66, 15);
             label7.TabIndex = 25;
@@ -241,7 +241,7 @@
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new Point(459, 80);
+            label8.Location = new Point(469, 80);
             label8.Name = "label8";
             label8.Size = new Size(29, 15);
             label8.TabIndex = 26;
@@ -250,7 +250,7 @@
             // label9
             // 
             label9.AutoSize = true;
-            label9.Location = new Point(432, 110);
+            label9.Location = new Point(442, 110);
             label9.Name = "label9";
             label9.Size = new Size(56, 15);
             label9.TabIndex = 27;
@@ -284,6 +284,8 @@
             Controls.Add(textGenre);
             Controls.Add(textArtist);
             Controls.Add(textTitle);
+            MaximumSize = new Size(734, 341);
+            MinimumSize = new Size(734, 341);
             Name = "SongInfoEditForm";
             Text = "SongInfoEditForm";
             ((System.ComponentModel.ISupportInitialize)songImage).EndInit();
