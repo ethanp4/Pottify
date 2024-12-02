@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using TagLib;
 
 namespace Pottify
@@ -54,23 +55,35 @@ namespace Pottify
             tfile = TagLib.File.Create(path); //could error if the file is bad
             filePath = path;
             id = songsList.Count;
-            title = tfile.Tag.Title;
-            artist = tfile.Tag.FirstPerformer;
-            genre = tfile.Tag.FirstGenre;
-            album = tfile.Tag.Album;
+            title = tfile.Tag.Title ?? "No title";
+            artist = tfile.Tag.FirstPerformer ?? "No artist set";
+            genre = tfile.Tag.FirstGenre ?? "No genre set";
+            album = tfile.Tag.Album ?? "No album set";
             copyright = tfile.Tag.Copyright;
             comments = tfile.Tag.Comment;
             year = tfile.Tag.Year;
             trackNumber = tfile.Tag.Track;
             trackCount = tfile.Tag.TrackCount;
             length = tfile.Properties.Duration;
-            picture = tfile.Tag.Pictures[0];
 
-            var ms = new MemoryStream(picture.Data.Data);
-            ms.Seek(0, SeekOrigin.Begin);
-            var bmp = new Bitmap(ms);
+            Bitmap bmp;
+            if (tfile.Tag.Pictures.Length == 0) //make blank picture if the file doesnt have one
+            {
+                bmp = new Bitmap(256, 256);
+                using (Graphics graph = Graphics.FromImage(bmp))
+                {
+                    Rectangle ImageSize = new Rectangle(0, 0, 256, 256);
+                    graph.FillRectangle(Brushes.White, ImageSize);
+                }
+            } else
+            {
+                picture = tfile.Tag.Pictures[0];
+                var ms = new MemoryStream(picture.Data.Data);
+                ms.Seek(0, SeekOrigin.Begin);
+                bmp = new Bitmap(ms);
+                ms.Dispose();
+            }
             images.Images.Add(id.ToString(), bmp);
-            ms.Dispose();
 
             // Debug.WriteLine($"Added song: {title} {artist[0]} {album} no.{trackNumber}");
             songsList.Add(this);
@@ -82,26 +95,13 @@ namespace Pottify
             return song;
         }
 
-        public static void reloadIndividualSong(Song newSong)
-        {
-            for (int i = 0; i < songsList.Count; i++)
-            {
-                if (songsList[i].id == newSong.id)
-                {
-                    songsList[i] = newSong;
-                    Debug.WriteLine($"Reloaded song {newSong}");
-                }
-
-            }
-        }
-
         public Bitmap getImageAsBitmap()
         {
-            var ms = new MemoryStream(picture.Data.Data);
-            ms.Seek(0, SeekOrigin.Begin);
-            var bmp = new Bitmap(ms);
-            ms.Dispose();
-            return bmp;
+            //var ms = new MemoryStream(picture.Data.Data);
+            //ms.Seek(0, SeekOrigin.Begin);
+            //var bmp = new Bitmap(ms);
+            //ms.Dispose();
+            return new Bitmap(images.Images[this.id]);
         }
 
         public void saveMetadata()

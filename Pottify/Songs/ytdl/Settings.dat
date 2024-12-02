@@ -7,7 +7,7 @@
   "ShouldInjectTags": true,
   "ShouldSkipExistingFiles": false,
   "FileNameTemplate": "$title",
-  "ParallelLimit": 2,
+  "ParallelLimit": 4,
   "LastAuthCookies": null,
   "LastContainer": {
     "Name": "mp3"

@@ -132,6 +132,7 @@ namespace Pottify
                 artistList.Clear();
             }
             artistList = Song.songsList
+                .Where(s => s.artist != null)
                 .Select(s => s.artist)
                 .Distinct()
                 .OrderBy(a => a)
@@ -150,6 +151,7 @@ namespace Pottify
                 listItem.Text = artist;
                 listItem.Tag = artist;
                 listItem.ImageKey = Song.songsList.Where(s => s.artist.Contains(artist)).ToList()[0].id.ToString();
+
                 songsListView.Items.Add(listItem);
             }
 
