@@ -18,7 +18,6 @@ namespace Pottify {
             InitializeComponent();
             //https://github.com/mono/taglib-sharp
 
-            var load = new LittleLoadingMessage();
             instance = this;
             oneTimeInitStuff();
             reinitSongs();
@@ -226,6 +225,7 @@ namespace Pottify {
 
         private void ShowSongsInPlaylist(Playlist playlist)
         {
+            viewType = VIEWTYPE.SONG;
             songsListView.Items.Clear();
             songsListView.Columns.Clear();
             songsListView.Columns.Add("Title", 200);
@@ -399,17 +399,10 @@ namespace Pottify {
                     ShowSongsByArtist(selectedArtist);
                     break;
                 case VIEWTYPE.PLAYLIST:
-                    if (songsListView.Columns[0].Text == "Playlist Name")
-                    {
-                        var selectedPlaylist = (Playlist)songsListView.SelectedItems[0].Tag;
-                        Debug.WriteLine("Playlist was double-clicked: " + selectedPlaylist.name);
-                        ShowSongsInPlaylist(selectedPlaylist);
-                    }
-                    else
-                    {
-                        var selectedSongFromPlaylist = (Song)songsListView.SelectedItems[0].Tag;
-                        PlaySelectedSong(selectedSongFromPlaylist);
-                    }
+
+                    var selectedPlaylist = (Playlist)songsListView.SelectedItems[0].Tag;
+                    Debug.WriteLine("Playlist was double-clicked: " + selectedPlaylist.name);
+                    ShowSongsInPlaylist(selectedPlaylist);
                     break;
                 case VIEWTYPE.ALBUM:
                     var selectedAlbum = songsListView.SelectedItems[0].Tag.ToString();
@@ -475,7 +468,7 @@ namespace Pottify {
         {
             if (SongPlayer.getStatus() == PlaybackState.Playing)
             {
-                SongPlayer.ignoreNextSongFinishEvent = true;
+                SongPlayer.skipSongFinishedEvent = true;
             }
             SongPlayer.playSong(song); 
             Debug.WriteLine($"Playing song: {song.title}");

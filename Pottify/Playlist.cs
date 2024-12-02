@@ -11,7 +11,7 @@ namespace Pottify
         public int id { get; private set; }
         public string name { get; set; }
         public string description { get; set; }
-        private List<int> songs { get; }
+        public List<int> songs { get; set; }
         private static List<Playlist> playlists = new List<Playlist>();
         private static string saveFilePath = "playlists.json";
 
@@ -20,7 +20,7 @@ namespace Pottify
             this.name = name;
             this.description = description;
             this.songs = new();
-            this.id = playlists.Count > 0 ? playlists[^1].id + 1 : 1; // Incremental ID
+            this.id = playlists.Count; // Incremental ID
             playlists.Add(this);
             Debug.WriteLine($"Created playlist {this}");
         }
@@ -53,7 +53,7 @@ namespace Pottify
         {
             try
             {
-                var json = JsonSerializer.Serialize(playlists, new JsonSerializerOptions { WriteIndented = true });
+                var json = JsonSerializer.Serialize(playlists, new JsonSerializerOptions { WriteIndented = true, });
                 File.WriteAllText(saveFilePath, json);
                 Debug.WriteLine("Playlists saved successfully.");
             }

@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Pottify
 {
-    public partial class LittleLoadingMessage : UserControl
+    public partial class LoadingForm : Form
     {
-        public LittleLoadingMessage()
+        public LoadingForm()
         {
             InitializeComponent();
         }
