@@ -130,20 +130,22 @@ namespace Pottify
             SongControls.instance.setSongInfo(2, null);
         }
 
-        public static decimal getProgress()
+        public static double getProgress()
         {
             if (outputDevice.PlaybackState != PlaybackState.Playing)
             {
                 return 0;
             }
             var progress = outputDevice.GetPositionTimeSpan().TotalMilliseconds;
-            progress /= 1000.0;
-            progress = audioFile.Position / ((long)audioFile.WaveFormat.AverageBytesPerSecond);
-            return (decimal)progress;
+            //progress /= 1000.0;
+            progress = (double)audioFile.Position / ((double)audioFile.WaveFormat.AverageBytesPerSecond);
+            Debug.WriteLine($"Position is {audioFile.Position}");
+            Debug.WriteLine($"Progress is {progress}");
+            return progress;
         }
-        public static void setPosition(long positionInSeconds)
+        public static void setPosition(double positionInSeconds)
         {
-            audioFile.Position = (long)audioFile.WaveFormat.AverageBytesPerSecond * positionInSeconds;
+            audioFile.Position = Convert.ToInt64(((double)audioFile.WaveFormat.AverageBytesPerSecond) * positionInSeconds);
         }
     }
 }
