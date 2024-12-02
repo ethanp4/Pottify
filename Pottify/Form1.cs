@@ -22,7 +22,14 @@ namespace Pottify {
             instance = this;
             oneTimeInitStuff();
             reinitSongs();
+            Playlist.LoadPlaylists();
         }
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            Playlist.SavePlaylists(); // Save playlists to file
+            base.OnFormClosing(e);
+        }
+
 
         private void oneTimeInitStuff()
         {
@@ -39,7 +46,7 @@ namespace Pottify {
         public void reinitSongs() //this function is rerun if stuff is edited
         {
             var songsPath = "..\\..\\..\\Songs";
-             //songsPath = @"C:\Users\Ethan\Music\";
+            //songsPath = @"C:\Users\Ethan\Music\";
             //load songs and set listview columns
             Song.initSongList(songsPath);
             LoadArtists(); // load artists into the artistList
@@ -142,7 +149,7 @@ namespace Pottify {
             songsListView.Items.Clear();
             songsListView.Columns.Clear();
             songsListView.Columns.Add("Artist", 300);
-            
+
             foreach (var artist in artistList)
             {
                 var listItem = new ListViewItem();
@@ -188,13 +195,89 @@ namespace Pottify {
             listItem.Tag = s; //get data from here when clicked or something
             return listItem;
         }
+
+        //////////////////////////////PLAYLIST////////////////////////////
+        private void ShowPlaylists()
+        {
+            songsListView.Items.Clear();
+            songsListView.Columns.Clear();
+            songsListView.Columns.Add("Playlist Name", 300);
+            songsListView.Columns.Add("Description", 300);
+
+            var playlists = Playlist.getAllPlaylists();
+            if (playlists.Count == 0)
+            {
+                Debug.WriteLine("No playlists to display.");
+                return;
+            }
+
+            foreach (var playlist in playlists)
+            {
+                var listItem = new ListViewItem
+                {
+                    Text = playlist.name,
+                    Tag = playlist,
+                    ImageKey = "playlist" // Use a default playlist icon
+                };
+                listItem.SubItems.Add(playlist.description);
+                songsListView.Items.Add(listItem);
+            }
+        }
+
+        private void ShowSongsInPlaylist(Playlist playlist)
+        {
+            songsListView.Items.Clear();
+            songsListView.Columns.Clear();
+            songsListView.Columns.Add("Title", 200);
+            songsListView.Columns.Add("Artist", 200);
+            songsListView.Columns.Add("Album", 200);
+
+            if (playlist.getAllSongs().Count == 0)
+            {
+                Debug.WriteLine($"Playlist '{playlist.name}' is empty.");
+                return;
+            }
+
+            foreach (var songId in playlist.getAllSongs())
+            {
+                var song = Song.songsList.FirstOrDefault(s => s.id == songId);
+                if (song != null)
+                {
+                    var listItem = new ListViewItem
+                    {
+                        Text = song.title,
+                        Tag = song,
+                        ImageKey = song.id.ToString()
+                    };
+
+                    // Handle artist array safely
+                    listItem.SubItems.Add(song.artist != null && song.artist.Length > 0
+                        ? string.Join(", ", song.artist)
+                        : "Unknown Artist");
+
+                    // Handle album safely
+                    listItem.SubItems.Add(!string.IsNullOrEmpty(song.album)
+                        ? song.album
+                        : "Unknown Album");
+
+                    songsListView.Items.Add(listItem);
+                }
+            }
+        }
+
+
         ///////////////////////////////EVENTS/////////////////////////////
         private void addToPlaylistEvent(object sender, EventArgs e)
         {
             var targetSong = (Song)songsListView.SelectedItems[0].Tag;
-            var playlist = (Playlist)((ToolStripMenuItem)sender).Tag; //will be a playlist object
-            playlist.addSong(targetSong);
-            Debug.WriteLine($"Add song {targetSong} to playlist {playlist}");
+            var playlist = (Playlist)((ToolStripMenuItem)sender).Tag;
+
+            if (playlist != null && targetSong != null)
+            {
+                playlist.addSong(targetSong); // Add the song to the playlist
+                Playlist.SavePlaylists(); // Save the updated playlist
+                Debug.WriteLine($"Song '{targetSong.title}' added to playlist '{playlist.name}'.");
+            }
         }
 
         private void editSongEvent(object sender, EventArgs e)
@@ -258,15 +341,44 @@ namespace Pottify {
                         case VIEWTYPE.ARTIST:
                             break;
                         case VIEWTYPE.PLAYLIST:
+                            ShowPlaylistContextMenu(focusedItem);
                             break;
                         case VIEWTYPE.ALBUM:
                             break;
-                            
+
                     }
                 {
                 }
             }
         }
+
+        private void ShowPlaylistContextMenu(ListViewItem focusedItem)
+        {
+            var playlistContextMenu = new ContextMenuStrip();
+
+            var deletePlaylist = new ToolStripMenuItem("Delete Playlist");
+            deletePlaylist.Click += (s, e) => DeletePlaylist((Playlist)focusedItem.Tag);
+
+            playlistContextMenu.Items.Add(deletePlaylist);
+
+            playlistContextMenu.Show(Cursor.Position);
+        }
+
+        private void DeletePlaylist(Playlist playlist)
+        {
+            var confirm = MessageBox.Show($"Are you sure you want to delete the playlist '{playlist.name}'?",
+                                           "Confirm Delete", MessageBoxButtons.YesNo);
+
+            if (confirm == DialogResult.Yes)
+            {
+                Playlist.getAllPlaylists().Remove(playlist); // Remove the playlist
+                Playlist.SavePlaylists(); // Save changes
+                ShowPlaylists(); // Refresh the playlist view
+                Debug.WriteLine($"Deleted playlist: {playlist.name}");
+            }
+        }
+
+
 
         private void itemDoubleClick(object sender, EventArgs e)
         {
@@ -287,6 +399,17 @@ namespace Pottify {
                     ShowSongsByArtist(selectedArtist);
                     break;
                 case VIEWTYPE.PLAYLIST:
+                    if (songsListView.Columns[0].Text == "Playlist Name")
+                    {
+                        var selectedPlaylist = (Playlist)songsListView.SelectedItems[0].Tag;
+                        Debug.WriteLine("Playlist was double-clicked: " + selectedPlaylist.name);
+                        ShowSongsInPlaylist(selectedPlaylist);
+                    }
+                    else
+                    {
+                        var selectedSongFromPlaylist = (Song)songsListView.SelectedItems[0].Tag;
+                        PlaySelectedSong(selectedSongFromPlaylist);
+                    }
                     break;
                 case VIEWTYPE.ALBUM:
                     var selectedAlbum = songsListView.SelectedItems[0].Tag.ToString();
@@ -348,6 +471,17 @@ namespace Pottify {
 
         }
 
+        private void PlaySelectedSong(Song song)
+        {
+            if (SongPlayer.getStatus() == PlaybackState.Playing)
+            {
+                SongPlayer.ignoreNextSongFinishEvent = true;
+            }
+            SongPlayer.playSong(song); 
+            Debug.WriteLine($"Playing song: {song.title}");
+        }
+
+
         //Event handler for "Artists" button
         private void btnArtists_Click_1(object sender, EventArgs e) //change view contents
         {
@@ -368,10 +502,17 @@ namespace Pottify {
 
         private void btnAlbum_Click(object sender, EventArgs e)
         {
-            if (viewType == VIEWTYPE.ALBUM) { return; } 
-            viewType = VIEWTYPE.ALBUM; 
+            if (viewType == VIEWTYPE.ALBUM) { return; }
+            viewType = VIEWTYPE.ALBUM;
             ShowAlbums();
 
+        }
+
+        private void btnPlaylist_Click(object sender, EventArgs e)
+        {
+            if (viewType == VIEWTYPE.PLAYLIST) { return; }
+            viewType = VIEWTYPE.PLAYLIST;
+            ShowPlaylists();
         }
     }
 }

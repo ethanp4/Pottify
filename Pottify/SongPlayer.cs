@@ -55,7 +55,8 @@ namespace Pottify
             }
             playSong(nextSong);
         }
-        public static void nextSong()
+
+      public static void nextSong()
         {
             outputDevice.Stop();
         }
@@ -73,6 +74,7 @@ namespace Pottify
                 Debug.WriteLine("Restarted the song because there was no history or it was < 3 seconds into the song");
             }
         }
+
         public static void playSong() //when no song object is passed then choose the best option depending on the state
         {
             switch (outputDevice.PlaybackState)
