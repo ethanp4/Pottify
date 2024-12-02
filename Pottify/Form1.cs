@@ -56,7 +56,7 @@ namespace Pottify
                 Song.initSongList(songsPath);
                 LoadArtists();
                 LoadAlbums();
-            } 
+            }
 
             songsListView.Columns.Clear();
             songsListView.Items.Clear();
@@ -280,7 +280,7 @@ namespace Pottify
         {
             var targetSong = (Song)songsListView.SelectedItems[0].Tag;
             var editForm = new SongInfoEditForm(targetSong, SongPlayer.currentSong == targetSong ? true : false);
-            editForm.Show();
+            editForm.ShowDialog();
             Debug.WriteLine($"Open edit form for {targetSong}");
         }
 
@@ -498,6 +498,11 @@ namespace Pottify
             if (viewType == VIEWTYPE.PLAYLIST) { return; }
             viewType = VIEWTYPE.PLAYLIST;
             ShowPlaylists();
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            reinitSongs(true);
         }
     }
 }

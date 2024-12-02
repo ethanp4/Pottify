@@ -47,13 +47,13 @@
             {
                 song.saveMetadata();
                 MessageBox.Show("Successfully saved song");
+                Form1.instance.reinitSongs(false);
                 DialogResult = DialogResult.OK;
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Failed to save song: {ex.Message}"); //usually due to the file being used by another process (its being played)
             }
-            Form1.instance.reinitSongs(false);
         }
     }
 }
