@@ -95,13 +95,27 @@ namespace Pottify
             return song;
         }
 
-        public Bitmap getImageAsBitmap()
+        public Bitmap getImageAsBitmap() //need to remake it since the bitmap inside the images Imagelist is downscaled 
         {
-            //var ms = new MemoryStream(picture.Data.Data);
-            //ms.Seek(0, SeekOrigin.Begin);
-            //var bmp = new Bitmap(ms);
-            //ms.Dispose();
-            return new Bitmap(images.Images[this.id]);
+            Bitmap bmp;
+            if (tfile.Tag.Pictures.Length == 0) //make blank picture if the file doesnt have one
+            {
+                bmp = new Bitmap(256, 256);
+                using (Graphics graph = Graphics.FromImage(bmp))
+                {
+                    Rectangle ImageSize = new Rectangle(0, 0, 256, 256);
+                    graph.FillRectangle(Brushes.White, ImageSize);
+                }
+            }
+            else
+            {
+                picture = tfile.Tag.Pictures[0];
+                var ms = new MemoryStream(picture.Data.Data);
+                ms.Seek(0, SeekOrigin.Begin);
+                bmp = new Bitmap(ms);
+                ms.Dispose();
+            }
+            return bmp;
         }
 
         public void saveMetadata()
