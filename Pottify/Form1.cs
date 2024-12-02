@@ -18,7 +18,7 @@ namespace Pottify
 
             instance = this;
             oneTimeInitStuff();
-            reinitSongs(true, null);
+            reinitSongs(true);
             Playlist.LoadPlaylists();
             ResizeEnd += onResize;
         }
@@ -46,7 +46,7 @@ namespace Pottify
         }
 
         ////////////////////Create initial view//////////////////////////////
-        public void reinitSongs(bool loadAllSongs, Song songToReload = null) //this function is rerun if stuff is edited
+        public void reinitSongs(bool loadAllSongs) //this function is rerun if stuff is edited
         {
             var songsPath = "..\\..\\..\\Songs";
             //songsPath = @"C:\Users\Ethan\Music\";
@@ -56,10 +56,7 @@ namespace Pottify
                 Song.initSongList(songsPath);
                 LoadArtists();
                 LoadAlbums();
-            } else if (songToReload != null)
-            {
-                Song.reloadIndividualSong(songToReload); //performance
-            }
+            } 
 
             songsListView.Columns.Clear();
             songsListView.Items.Clear();
@@ -152,7 +149,6 @@ namespace Pottify
                 var listItem = new ListViewItem();
                 listItem.Text = artist;
                 listItem.Tag = artist;
-                var songsByArtist = Song.songsList.Where(s => s.artist.Contains(artist)).ToList()[0].id;
                 listItem.ImageKey = Song.songsList.Where(s => s.artist.Contains(artist)).ToList()[0].id.ToString();
                 songsListView.Items.Add(listItem);
             }
@@ -444,17 +440,18 @@ namespace Pottify
 
         private void btnAll_Click(object sender, EventArgs e) //change view contents
         {
-            //if (viewType == VIEWTYPE.SONG) { return; } //do nothing if its already this
-            reinitSongs(false, null);
-            viewType = VIEWTYPE.SONG;
-            songsListView.Items.Clear();
-            songsListView.Items.AddRange(fullList.ToArray()); // Restore full song list
-            songsListView.Columns.Clear();
-            songsListView.Columns.Add("Title", 200);
-            songsListView.Columns.Add("Artist", 200);
-            songsListView.Columns.Add("Album", 200);
-            songsListView.Columns.Add("Track", 70);
-            songsListView.Columns.Add("Year", 100);
+            if (viewType != VIEWTYPE.SONG)
+            {
+                songsListView.Columns.Clear();
+                songsListView.Columns.Add("Title", 200);
+                songsListView.Columns.Add("Artist", 200);
+                songsListView.Columns.Add("Album", 200);
+                songsListView.Columns.Add("Track", 70);
+                songsListView.Columns.Add("Year", 100);
+                songsListView.Items.Clear();
+                songsListView.Items.AddRange(fullList.ToArray()); // Restore full song list
+                viewType = VIEWTYPE.SONG;
+            }
         }
 
         private void PlaySelectedSong(Song song)
