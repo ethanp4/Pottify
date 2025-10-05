@@ -15,6 +15,8 @@ namespace Pottify
             timer.Interval = 100;
             timer.Start();
             instance = this;
+
+            tooltipSongProgressHelp.SetToolTip(numProgress, "Click the timer to edit it, hit enter to set, or esc to cancel");
         }
 
         public enum MODE { NORMAL, REPEAT_SONG, SHUFFLE }
@@ -105,19 +107,9 @@ namespace Pottify
             SongPlayer.nextSong();
         }
 
-        private void songProgressFocus(object sender, EventArgs e)
+        private void songProgressClicked(object sender, EventArgs e)
         {
-            switch (((NumericUpDown)sender).Focused)
-            {
-                case true:
-                    Debug.WriteLine("Progress enter focus");
-                    timer.Stop();
-                    break;
-                case false:
-                    Debug.WriteLine("Progress exit focus");
-                    timer.Start();
-                    break;
-            }
+            timer.Stop();
         }
 
         public void setProgress(object sender, EventArgs e)
@@ -130,7 +122,10 @@ namespace Pottify
             if (e.KeyCode == Keys.Enter)
             {
                 SongPlayer.setPosition((long)numProgress.Value);
-                this.ActiveControl = null;
+                timer.Start();
+            }
+            if (e.KeyCode == Keys.Escape)
+            {
                 timer.Start();
             }
         }

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             btnPrevious = new Button();
             btnPlay = new Button();
             btnNext = new Button();
@@ -38,14 +39,16 @@
             label1 = new Label();
             numProgress = new NumericUpDown();
             labelLength = new Label();
+            tooltipSongProgressHelp = new ToolTip(components);
             ((System.ComponentModel.ISupportInitialize)numProgress).BeginInit();
             SuspendLayout();
             // 
             // btnPrevious
             // 
-            btnPrevious.Location = new Point(0, 119);
+            btnPrevious.Location = new Point(0, 159);
+            btnPrevious.Margin = new Padding(3, 4, 3, 4);
             btnPrevious.Name = "btnPrevious";
-            btnPrevious.Size = new Size(75, 23);
+            btnPrevious.Size = new Size(86, 31);
             btnPrevious.TabIndex = 1;
             btnPrevious.Text = "Previous";
             btnPrevious.UseVisualStyleBackColor = true;
@@ -53,9 +56,10 @@
             // 
             // btnPlay
             // 
-            btnPlay.Location = new Point(81, 119);
+            btnPlay.Location = new Point(93, 159);
+            btnPlay.Margin = new Padding(3, 4, 3, 4);
             btnPlay.Name = "btnPlay";
-            btnPlay.Size = new Size(71, 23);
+            btnPlay.Size = new Size(81, 31);
             btnPlay.TabIndex = 2;
             btnPlay.Text = "Play";
             btnPlay.UseVisualStyleBackColor = true;
@@ -63,9 +67,10 @@
             // 
             // btnNext
             // 
-            btnNext.Location = new Point(155, 119);
+            btnNext.Location = new Point(177, 159);
+            btnNext.Margin = new Padding(3, 4, 3, 4);
             btnNext.Name = "btnNext";
-            btnNext.Size = new Size(76, 23);
+            btnNext.Size = new Size(87, 31);
             btnNext.TabIndex = 3;
             btnNext.Text = "Next";
             btnNext.UseVisualStyleBackColor = true;
@@ -73,22 +78,22 @@
             // 
             // labelInfo
             // 
-            labelInfo.Anchor = AnchorStyles.None;
             labelInfo.AutoSize = true;
-            labelInfo.Location = new Point(0, 46);
-            labelInfo.MaximumSize = new Size(170, 0);
-            labelInfo.MinimumSize = new Size(228, 70);
+            labelInfo.Location = new Point(0, 61);
+            labelInfo.MaximumSize = new Size(194, 0);
+            labelInfo.MinimumSize = new Size(261, 93);
             labelInfo.Name = "labelInfo";
-            labelInfo.Size = new Size(228, 70);
+            labelInfo.Size = new Size(261, 93);
             labelInfo.TabIndex = 3;
             labelInfo.Text = "No song is playing. Double click a song or press play to play a random song";
             labelInfo.TextAlign = ContentAlignment.BottomLeft;
             // 
             // btnStop
             // 
-            btnStop.Location = new Point(81, 148);
+            btnStop.Location = new Point(93, 197);
+            btnStop.Margin = new Padding(3, 4, 3, 4);
             btnStop.Name = "btnStop";
-            btnStop.Size = new Size(71, 23);
+            btnStop.Size = new Size(81, 31);
             btnStop.TabIndex = 5;
             btnStop.Text = "Stop";
             btnStop.UseVisualStyleBackColor = true;
@@ -96,9 +101,10 @@
             // 
             // btnShuffle
             // 
-            btnShuffle.Location = new Point(155, 148);
+            btnShuffle.Location = new Point(177, 197);
+            btnShuffle.Margin = new Padding(3, 4, 3, 4);
             btnShuffle.Name = "btnShuffle";
-            btnShuffle.Size = new Size(76, 23);
+            btnShuffle.Size = new Size(87, 31);
             btnShuffle.TabIndex = 6;
             btnShuffle.Text = "Shuffle";
             btnShuffle.UseVisualStyleBackColor = true;
@@ -106,9 +112,10 @@
             // 
             // buttonLoop
             // 
-            buttonLoop.Location = new Point(0, 148);
+            buttonLoop.Location = new Point(0, 197);
+            buttonLoop.Margin = new Padding(3, 4, 3, 4);
             buttonLoop.Name = "buttonLoop";
-            buttonLoop.Size = new Size(75, 23);
+            buttonLoop.Size = new Size(86, 31);
             buttonLoop.TabIndex = 4;
             buttonLoop.Text = "Loop";
             buttonLoop.UseVisualStyleBackColor = true;
@@ -117,36 +124,40 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(3, 2);
+            label1.Location = new Point(3, 3);
             label1.Name = "label1";
-            label1.Size = new Size(85, 15);
+            label1.Size = new Size(106, 20);
             label1.TabIndex = 7;
             label1.Text = "Song Progress:";
             // 
             // numProgress
             // 
             numProgress.DecimalPlaces = 1;
-            numProgress.Location = new Point(86, 0);
+            numProgress.Location = new Point(108, 0);
+            numProgress.Margin = new Padding(3, 4, 3, 4);
             numProgress.Maximum = new decimal(new int[] { 100000, 0, 0, 0 });
             numProgress.Name = "numProgress";
-            numProgress.Size = new Size(58, 23);
+            numProgress.Size = new Size(66, 27);
             numProgress.TabIndex = 0;
-            numProgress.Enter += songProgressFocus;
+            numProgress.Click += songProgressClicked;
             numProgress.KeyDown += songProgressKeyDown;
-            numProgress.Leave += songProgressFocus;
             // 
             // labelLength
             // 
             labelLength.AutoSize = true;
-            labelLength.Location = new Point(3, 26);
+            labelLength.Location = new Point(3, 35);
             labelLength.Name = "labelLength";
-            labelLength.Size = new Size(146, 15);
+            labelLength.Size = new Size(181, 20);
             labelLength.TabIndex = 10;
             labelLength.Text = "Song Length: I dont know!";
             // 
+            // tooltipSongProgressHelp
+            // 
+            tooltipSongProgressHelp.ToolTipTitle = "Song Progress in Seconds";
+            // 
             // SongControls
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(labelLength);
             Controls.Add(numProgress);
@@ -158,8 +169,9 @@
             Controls.Add(btnNext);
             Controls.Add(btnPlay);
             Controls.Add(btnPrevious);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "SongControls";
-            Size = new Size(233, 172);
+            Size = new Size(266, 229);
             ((System.ComponentModel.ISupportInitialize)numProgress).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -177,5 +189,6 @@
         private Label label1;
         private NumericUpDown numProgress;
         private Label labelLength;
+        private ToolTip tooltipSongProgressHelp;
     }
 }
