@@ -136,9 +136,15 @@ namespace Pottify
             //Debug.WriteLine($"Progress is {progress}");
             return progress;
         }
+
         public static void setPosition(double positionInSeconds)
         {
             audioFile.Position = Convert.ToInt64(((double)audioFile.WaveFormat.AverageBytesPerSecond) * positionInSeconds);
+        }
+
+        public static void setVolume(float volume)
+        {
+            outputDevice.Volume = volume;
         }
     }
 }

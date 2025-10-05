@@ -40,6 +40,7 @@
             numProgress = new NumericUpDown();
             labelLength = new Label();
             tooltipSongProgressHelp = new ToolTip(components);
+            volumeSlider1 = new NAudio.Gui.VolumeSlider();
             ((System.ComponentModel.ISupportInitialize)numProgress).BeginInit();
             SuspendLayout();
             // 
@@ -145,20 +146,28 @@
             // labelLength
             // 
             labelLength.AutoSize = true;
-            labelLength.Location = new Point(3, 35);
+            labelLength.Location = new Point(177, 4);
             labelLength.Name = "labelLength";
-            labelLength.Size = new Size(181, 20);
+            labelLength.Size = new Size(85, 20);
             labelLength.TabIndex = 10;
-            labelLength.Text = "Song Length: I dont know!";
+            labelLength.Text = "Secs / Total";
             // 
             // tooltipSongProgressHelp
             // 
             tooltipSongProgressHelp.ToolTipTitle = "Song Progress in Seconds";
             // 
+            // volumeSlider1
+            // 
+            volumeSlider1.Location = new Point(5, 34);
+            volumeSlider1.Name = "volumeSlider1";
+            volumeSlider1.Size = new Size(258, 30);
+            volumeSlider1.TabIndex = 11;
+            // 
             // SongControls
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(volumeSlider1);
             Controls.Add(labelLength);
             Controls.Add(numProgress);
             Controls.Add(label1);
@@ -190,5 +199,6 @@
         private NumericUpDown numProgress;
         private Label labelLength;
         private ToolTip tooltipSongProgressHelp;
+        private NAudio.Gui.VolumeSlider volumeSlider1;
     }
 }

@@ -17,6 +17,12 @@ namespace Pottify
             instance = this;
 
             tooltipSongProgressHelp.SetToolTip(numProgress, "Click the timer to edit it, hit enter to set, or esc to cancel");
+            volumeSlider1.VolumeChanged += VolumeSlider1_VolumeChanged;
+        }
+
+        private void VolumeSlider1_VolumeChanged(object? sender, EventArgs e)
+        {
+            SongPlayer.setVolume(volumeSlider1.Volume);
         }
 
         public enum MODE { NORMAL, REPEAT_SONG, SHUFFLE }
@@ -35,12 +41,12 @@ namespace Pottify
             {
                 case 0: //playing a song
                     info = $"Playing {song}";
-                    length = $"Song Length: {song.length.TotalSeconds.ToString("F1")} / {song.length.ToString(@"mm\:ss")}";
+                    length = $"{song.length.TotalSeconds.ToString("F1")} / {song.length.ToString(@"mm\:ss")}";
                     btnPlay.Text = "Pause";
                     break;
                 case 1: //paused a song
                     info = $"Paused {song}";
-                    length = $"Song Length: {song.length.TotalSeconds.ToString("F1")} / {song.length.ToString(@"mm\:ss")}";
+                    length = $"{song.length.TotalSeconds.ToString("F1")} / {song.length.ToString(@"mm\:ss")}";
                     btnPlay.Text = "Play";
                     break;
                 default:
