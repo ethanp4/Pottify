@@ -127,7 +127,7 @@ namespace Pottify
 
         public static double getProgress()
         {
-            if (outputDevice.PlaybackState != PlaybackState.Playing)
+            if (outputDevice.PlaybackState == PlaybackState.Stopped)
             {
                 return 0;
             }

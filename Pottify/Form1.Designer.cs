@@ -48,29 +48,29 @@ namespace Pottify {
             // songsListView
             // 
             songsListView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            songsListView.Location = new Point(250, 1);
-            songsListView.Margin = new Padding(3, 2, 3, 2);
+            songsListView.Location = new Point(286, 1);
             songsListView.Name = "songsListView";
-            songsListView.Size = new Size(840, 687);
+            songsListView.Size = new Size(959, 915);
             songsListView.TabIndex = 2;
             songsListView.UseCompatibleStateImageBehavior = false;
             songsListView.View = View.Details;
+            songsListView.KeyDown += songsListKeyDown;
             // 
             // textSearch
             // 
-            textSearch.Location = new Point(12, 12);
+            textSearch.Location = new Point(14, 16);
+            textSearch.Margin = new Padding(3, 4, 3, 4);
             textSearch.Name = "textSearch";
             textSearch.PlaceholderText = "Search for a song";
-            textSearch.Size = new Size(226, 23);
+            textSearch.Size = new Size(258, 27);
             textSearch.TabIndex = 0;
             textSearch.TextChanged += searchChanged;
             // 
             // btnDetails
             // 
-            btnDetails.Location = new Point(6, 21);
-            btnDetails.Margin = new Padding(3, 2, 3, 2);
+            btnDetails.Location = new Point(7, 28);
             btnDetails.Name = "btnDetails";
-            btnDetails.Size = new Size(227, 23);
+            btnDetails.Size = new Size(259, 31);
             btnDetails.TabIndex = 5;
             btnDetails.Text = "Set Details View";
             btnDetails.UseVisualStyleBackColor = true;
@@ -78,10 +78,9 @@ namespace Pottify {
             // 
             // btnImages
             // 
-            btnImages.Location = new Point(6, 48);
-            btnImages.Margin = new Padding(3, 2, 3, 2);
+            btnImages.Location = new Point(7, 64);
             btnImages.Name = "btnImages";
-            btnImages.Size = new Size(227, 23);
+            btnImages.Size = new Size(259, 31);
             btnImages.TabIndex = 6;
             btnImages.Text = "Set Images View";
             btnImages.UseVisualStyleBackColor = true;
@@ -89,10 +88,9 @@ namespace Pottify {
             // 
             // btnCreatePlaylist
             // 
-            btnCreatePlaylist.Location = new Point(6, 21);
-            btnCreatePlaylist.Margin = new Padding(3, 2, 3, 2);
+            btnCreatePlaylist.Location = new Point(7, 28);
             btnCreatePlaylist.Name = "btnCreatePlaylist";
-            btnCreatePlaylist.Size = new Size(227, 23);
+            btnCreatePlaylist.Size = new Size(259, 31);
             btnCreatePlaylist.TabIndex = 7;
             btnCreatePlaylist.Text = "Create playlist";
             btnCreatePlaylist.UseVisualStyleBackColor = true;
@@ -100,9 +98,10 @@ namespace Pottify {
             // 
             // btnAll
             // 
-            btnAll.Location = new Point(6, 22);
+            btnAll.Location = new Point(7, 29);
+            btnAll.Margin = new Padding(3, 4, 3, 4);
             btnAll.Name = "btnAll";
-            btnAll.Size = new Size(227, 23);
+            btnAll.Size = new Size(259, 31);
             btnAll.TabIndex = 1;
             btnAll.Text = "All songs";
             btnAll.UseVisualStyleBackColor = true;
@@ -110,9 +109,10 @@ namespace Pottify {
             // 
             // btnAlbum
             // 
-            btnAlbum.Location = new Point(6, 51);
+            btnAlbum.Location = new Point(7, 68);
+            btnAlbum.Margin = new Padding(3, 4, 3, 4);
             btnAlbum.Name = "btnAlbum";
-            btnAlbum.Size = new Size(227, 23);
+            btnAlbum.Size = new Size(259, 31);
             btnAlbum.TabIndex = 2;
             btnAlbum.Text = "Albums";
             btnAlbum.UseVisualStyleBackColor = true;
@@ -120,9 +120,10 @@ namespace Pottify {
             // 
             // btnArtist
             // 
-            btnArtist.Location = new Point(6, 80);
+            btnArtist.Location = new Point(7, 107);
+            btnArtist.Margin = new Padding(3, 4, 3, 4);
             btnArtist.Name = "btnArtist";
-            btnArtist.Size = new Size(227, 23);
+            btnArtist.Size = new Size(259, 31);
             btnArtist.TabIndex = 3;
             btnArtist.Text = "Artists";
             btnArtist.UseVisualStyleBackColor = true;
@@ -130,9 +131,10 @@ namespace Pottify {
             // 
             // btnPlaylist
             // 
-            btnPlaylist.Location = new Point(6, 109);
+            btnPlaylist.Location = new Point(7, 145);
+            btnPlaylist.Margin = new Padding(3, 4, 3, 4);
             btnPlaylist.Name = "btnPlaylist";
-            btnPlaylist.Size = new Size(227, 23);
+            btnPlaylist.Size = new Size(259, 31);
             btnPlaylist.TabIndex = 4;
             btnPlaylist.Text = "Playlists";
             btnPlaylist.UseVisualStyleBackColor = true;
@@ -141,10 +143,10 @@ namespace Pottify {
             // songControls1
             // 
             songControls1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            songControls1.Location = new Point(6, 16);
-            songControls1.Margin = new Padding(3, 4, 3, 4);
+            songControls1.Location = new Point(7, 21);
+            songControls1.Margin = new Padding(3, 5, 3, 5);
             songControls1.Name = "songControls1";
-            songControls1.Size = new Size(233, 171);
+            songControls1.Size = new Size(266, 228);
             songControls1.TabIndex = 8;
             // 
             // groupBox1
@@ -153,9 +155,11 @@ namespace Pottify {
             groupBox1.Controls.Add(btnAlbum);
             groupBox1.Controls.Add(btnPlaylist);
             groupBox1.Controls.Add(btnArtist);
-            groupBox1.Location = new Point(5, 41);
+            groupBox1.Location = new Point(6, 55);
+            groupBox1.Margin = new Padding(3, 4, 3, 4);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(241, 138);
+            groupBox1.Padding = new Padding(3, 4, 3, 4);
+            groupBox1.Size = new Size(275, 184);
             groupBox1.TabIndex = 14;
             groupBox1.TabStop = false;
             groupBox1.Text = "Views";
@@ -164,9 +168,11 @@ namespace Pottify {
             // 
             groupBox2.Controls.Add(btnDetails);
             groupBox2.Controls.Add(btnImages);
-            groupBox2.Location = new Point(5, 185);
+            groupBox2.Location = new Point(6, 247);
+            groupBox2.Margin = new Padding(3, 4, 3, 4);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(242, 83);
+            groupBox2.Padding = new Padding(3, 4, 3, 4);
+            groupBox2.Size = new Size(277, 111);
             groupBox2.TabIndex = 15;
             groupBox2.TabStop = false;
             groupBox2.Text = "Display modes";
@@ -175,9 +181,11 @@ namespace Pottify {
             // 
             groupBox3.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             groupBox3.Controls.Add(songControls1);
-            groupBox3.Location = new Point(5, 494);
+            groupBox3.Location = new Point(6, 659);
+            groupBox3.Margin = new Padding(3, 4, 3, 4);
             groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(242, 194);
+            groupBox3.Padding = new Padding(3, 4, 3, 4);
+            groupBox3.Size = new Size(277, 259);
             groupBox3.TabIndex = 16;
             groupBox3.TabStop = false;
             groupBox3.Text = "Controls";
@@ -186,18 +194,21 @@ namespace Pottify {
             // 
             groupBox4.Controls.Add(btnRefresh);
             groupBox4.Controls.Add(btnCreatePlaylist);
-            groupBox4.Location = new Point(5, 274);
+            groupBox4.Location = new Point(6, 365);
+            groupBox4.Margin = new Padding(3, 4, 3, 4);
             groupBox4.Name = "groupBox4";
-            groupBox4.Size = new Size(241, 81);
+            groupBox4.Padding = new Padding(3, 4, 3, 4);
+            groupBox4.Size = new Size(275, 108);
             groupBox4.TabIndex = 16;
             groupBox4.TabStop = false;
             groupBox4.Text = "Other";
             // 
             // btnRefresh
             // 
-            btnRefresh.Location = new Point(7, 48);
+            btnRefresh.Location = new Point(8, 64);
+            btnRefresh.Margin = new Padding(3, 4, 3, 4);
             btnRefresh.Name = "btnRefresh";
-            btnRefresh.Size = new Size(226, 23);
+            btnRefresh.Size = new Size(258, 31);
             btnRefresh.TabIndex = 17;
             btnRefresh.Text = "Refresh list";
             btnRefresh.UseVisualStyleBackColor = true;
@@ -205,17 +216,16 @@ namespace Pottify {
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1090, 687);
+            ClientSize = new Size(1246, 916);
             Controls.Add(groupBox4);
             Controls.Add(groupBox3);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
             Controls.Add(textSearch);
             Controls.Add(songsListView);
-            Margin = new Padding(3, 2, 3, 2);
-            MinimumSize = new Size(574, 563);
+            MinimumSize = new Size(653, 735);
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Pottify";

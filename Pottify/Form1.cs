@@ -377,6 +377,10 @@ namespace Pottify
 
         private void itemDoubleClick(object sender, EventArgs e)
         {
+            if (songsListView.SelectedItems.Count == 0)
+            {
+                return;
+            }
             switch (viewType)
             {
                 case VIEWTYPE.SONG:
@@ -503,6 +507,16 @@ namespace Pottify
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             reinitSongs(true);
+        }
+
+        private void songsListKeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Enter:
+                    itemDoubleClick(sender, e);
+                    break;
+            }
         }
     }
 }
